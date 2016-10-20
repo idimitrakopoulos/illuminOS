@@ -27,13 +27,15 @@ Clone the git repository in any local directory by typing the following:
 $ git clone https://github.com/idimitrakopoulos/illuminOS
 $ cd illuminOS
 ```
-Now you need to upload it to your microcontroller. To do this you can either use the excellent `mpfshell` [see installation instructions here](https://github.com/wendlers/mpfshell).
+Now you need to upload it to your microcontroller. To do this you can use the excellent `mpfshell` [see installation instructions here](https://github.com/wendlers/mpfshell). 
 
 After installing mpfshell you should connect your PC and microntroller via USB and type:
 
 ```bash
 $ sudo mpfshell -s mpf_cmd.mpf
 ```
+
+Of course you can also upload `illuminOS` manually or using one of your favorite IDEs (e.g. ESPlorer) 
 
 ## Examples
 
@@ -58,4 +60,26 @@ preferred_wifi = determine_preferred_wifi(configured_wifis, found_wifis)
 ip = connect_to_wifi(preferred_wifi["ssid"], preferred_wifi["password"])
 
 log("Connected with IP: " + ip)
+```
+
+
+### Listen for button clicks
+
+To listen for clicks on the Flash button of your board, place the following snippet in your `main.py`. This places a polling timer which anticipates button clicks. Upon first click it very briefly waits for another click and then registers either a single or a double click.
+
+Following this you could execute any code required by your project.
+
+For the **Flash** button use
+
+```python
+import util.nodemcu as board
+board.get_flash_button_interrupts()
+```
+And for the **User** button use 
+
+```python
+import util.nodemcu as board
+
+board.get_user_button_interrupts()
+
 ```
