@@ -63,7 +63,7 @@ ip = connect_to_wifi(preferred_wifi["ssid"], preferred_wifi["password"])
 
 log("Connected with IP: " + ip)
 ```
-
+---
 
 ### Listen for button clicks
 
