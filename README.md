@@ -1,23 +1,20 @@
 # illuminOS
 
-An open-source MicroPython based SDK for ESP8266 WiFi-enabled microcontrollers. 
+An open-source MicroPython based SDK for ESP8266 WiFi-enabled microcontrollers. It enables you to focus on your actual project by providing ready-made functionality for tedious stuff
 
-Intended for use in both commercial and open-source projects.
+## Main Features
 
-### Main Features
-
-* Enables you to focus on your actual project by providing ready-made functionality for tedious stuff 
 * Handles connections with known Wi-Fi networks according to user-defined priority
 * Detects single or any number of taps on microcontroller buttons and allows execution of any code after that
 * Allows the user to take control of the on-board LEDs and blink them with any pattern and delay
 * Automated installation on the mirocontroller (see installation section using `mpfshell`)
 * Filesystem formatter cleans up your microcontroller - no need to reflash it
+* Can be configured for any microcontroller (currently supported `NodeMCU`)
 * Simple logging functionality
 * Ability to read .properties files for configuration
+* Intended for use in both commercial and open-source projects.
 
 ## Resources
-
-[![Build Status](https://travis-ci.org/idimitrakopoulos/illuminOS.svg?branch=master)](https://travis-ci.org/idimitrakopoulos/illuminOS)
 
 Github issues list/bugtracker: https://github.com/idimitrakopoulos/illuminOS/issues
 
@@ -38,6 +35,32 @@ $ sudo mpfshell -s mpf_cmd.mpf
 ```
 
 Of course you can also upload `illuminOS` manually or using one of your favorite IDEs (e.g. ESPlorer) 
+
+## Project Structure
+
+A quick folder/file walkthrough of the project
+
+```bash
+conf (all configuration files go here)
+  network.properties (define your wifi networks here)
+util (utilities folder)
+  nodemcu.py (hardware mapping of NodeMCU board)
+  <yourboard.py> (you can write your own board mapping!)
+  toolkit.py (a generic toolkit library that contains board agnostic functions)
+boot.py (gets executed first during boot-up)
+main.py (gets executed second)
+```
+The user is free to utilize the functionalitu offered by illuminOS freely and at any point. It certainly makes sense however to play with some of the examples below by adding code inside `main.py` or `boot.py`.
+
+## Microcontroller Support
+
+illuminOS is open enough to allow the configuration and control of any ESP based microcontroller. At this point only nodeMCU has been configured by the author but other controllers can be contributed by users. 
+
+To do this a new module must be created.
+
+e.g. `util/nodemcu.py`
+
+In this file _board_ related configuration can be mapped and toolkit functions invoked. The concept is to abstract hardware mapping as much as possible from functionality.
 
 ## Examples
 
@@ -125,3 +148,13 @@ A simple logging functionality exists
 from util.toolkit import log
 log("hello world!")
 ```
+
+# License
+
+The content of this project itself is licensed under the [Creative Commons Attribution 3.0 license](http://creativecommons.org/licenses/by/3.0/us/deed.en_US), and the underlying source code used to format and display that content is licensed under the [MIT license](http://opensource.org/licenses/mit-license.php).
+
+
+
+Enjoy!
+
+Iason D.
