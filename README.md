@@ -26,7 +26,7 @@ Clone the git repository in any local directory by typing the following:
 $ git clone https://github.com/idimitrakopoulos/illuminOS
 $ cd illuminOS
 ```
-Now you need to upload it to your microcontroller. To do this you can use the excellent `mpfshell` [see installation instructions here](https://github.com/wendlers/mpfshell). 
+Now you need to upload it to your microcontroller. To do this you can use the excellent `mpfshell` [see installation instructions here](https://github.com/wendlers/mpfshell#installing). 
 
 After installing mpfshell you should connect your PC and microntroller via USB and type:
 
