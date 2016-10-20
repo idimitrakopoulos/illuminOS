@@ -84,6 +84,8 @@ import util.nodemcu as board
 board.get_user_button_interrupts()
 ```
 
+---
+
 ### Control LEDs
 
 You can make the on-board LEDs flash as per requirement by using the following command.
@@ -93,6 +95,8 @@ import util.nodemcu as board
 board.blink_blue_led(15, 0.06)
 ```
 
+---
+
 ### Format "Filesystem"
 
 You can recursively wipe files and folders from your microcontroller using this function. 
@@ -101,6 +105,7 @@ You can recursively wipe files and folders from your microcontroller using this 
 from util.toolkit import format_fs
 format_fs()
 ```
+---
 
 ### Read .properties files
 
@@ -110,6 +115,7 @@ In case you want to provide configuration using .properties files you can use th
 from util.toolkit import load_properties
 load_properties("conf/my.properties")
 ```
+---
 
 ### Logging
 
