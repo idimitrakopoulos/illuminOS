@@ -9,6 +9,7 @@ An open-source MicroPython based SDK for ESP8266 WiFi-enabled microcontrollers. 
 * Allows the user to take control of the on-board LEDs and blink them with any pattern and delay
 * Automated installation on the mirocontroller (see installation section using `mpfshell`)
 * Filesystem formatter cleans up your microcontroller - no need to reflash it
+* Send (Insta)Push notifications to your mobile phone straight from your microcontroller
 * Can be configured for any microcontroller (out of the box support for `NodeMCU`)
 * Simple logging functionality
 * Ability to read .properties files for configuration
@@ -128,6 +129,24 @@ You can recursively wipe files and folders from your microcontroller using this 
 ```python
 from util.toolkit import format_fs
 format_fs()
+```
+---
+
+### Send (Insta)Push Notifications
+
+You can use the InstaPush service to send push notifications to your mobile phone.
+
++ Go to the [Instapush](https://instapush.im) website and create an account. 
++ Once inside go to dashboard and create a new "application", give any name you like
++ In your new application create a new event
++ For the sake of this example name it "send_ip" (it can be anything you choose really)
++ Add a tracker called "ip"
++ Formulate your message as such "Hello, my IP address is {ip}"
++ Save it and make note of your app ID and app Secret
+
+```python
+from util.toolkit import sendInstapushNotification
+r = sendInstapushNotification("57f65af3455ag7848a96876hjf077c3", "ea456d8c303be4shhg56669339ca43b8", "send_ip", {'ip': ip})
 ```
 ---
 
