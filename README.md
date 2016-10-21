@@ -1,6 +1,6 @@
 # illuminOS
 
-An open-source MicroPython based SDK for ESP8266 WiFi-enabled microcontrollers. It enables you to focus on your actual project by providing ready-made functionality for tedious stuff
+An open-source MicroPython based SDK for ESP8266 WiFi-enabled microcontrollers. It enables you to focus on your actual project by providing ready-made functionality for tedious stuff.
 
 ## Main Features
 
@@ -9,7 +9,7 @@ An open-source MicroPython based SDK for ESP8266 WiFi-enabled microcontrollers. 
 * Allows the user to take control of the on-board LEDs and blink them with any pattern and delay
 * Automated installation on the mirocontroller (see installation section using `mpfshell`)
 * Filesystem formatter cleans up your microcontroller - no need to reflash it
-* Can be configured for any microcontroller (currently supported `NodeMCU`)
+* Can be configured for any microcontroller (out of the box support for `NodeMCU`)
 * Simple logging functionality
 * Ability to read .properties files for configuration
 * Intended for use in both commercial and open-source projects.
@@ -24,15 +24,16 @@ Clone the git repository in any local directory by typing the following:
 
 ```bash
 $ git clone https://github.com/idimitrakopoulos/illuminOS
-$ cd illuminOS
 ```
-Now you need to upload it to your microcontroller. To do this you can use the excellent `mpfshell` [see installation instructions here](https://github.com/wendlers/mpfshell#installing). 
+Now you need to upload it to your microcontroller. To do this first ensure you have the latest MicroPython firmware installed (>1.8.x). To upload files/folders you can use the excellent `mpfshell` [see installation instructions here](https://github.com/wendlers/mpfshell#installing). 
 
-After installing mpfshell you should connect your PC and microntroller via USB and type:
+After installing mpfshell you should connect your PC and microntroller via USB and type (provided the device connects to `/dev/ttyUSB0`):
 
 ```bash
+$ cd illuminOS
 $ sudo mpfshell -s mpf_cmd.mpf
 ```
+If the device connects to another path then simply edit `mpf_cmd.mpf` and replace `/dev/ttyUSB0` before running the above command.
 
 Of course you can also upload `illuminOS` manually or using one of your favorite IDEs (e.g. ESPlorer) 
 
