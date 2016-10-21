@@ -31,8 +31,6 @@ def connect_to_wifi(ssid, password):
     n.active(True)
     n.connect(ssid, password)
 
-    blink_onboard_led(5,1)
-
     return n.ifconfig()[0]
 
 def blink_onboard_led(times, delay, led):
@@ -91,9 +89,7 @@ def get_button_clicks(btn, bcc_key):
 
     if (btn.value() == 0):
         global button_click_counter
-        # log("fbc was = " + str(fbc))
         button_click_counter[bcc_key] += 1
-        # log("fbc now is = " + str(fbc))
         if button_click_counter[bcc_key] == 1:
             log("single-click registered (mem free: " + str(gc.mem_free()) + ")")
         elif button_click_counter[bcc_key] == 2:
@@ -109,3 +105,15 @@ def reset_button_click_counter(bcc_key):
     log("FBC resetting to 0. Previous was " + str(button_click_counter[bcc_key]))
     button_click_counter[bcc_key] = 0
     return button_click_counter[bcc_key]
+
+def updateDuckDNS(domain, token, ip):
+    pass
+
+def sendInstapushNotification(app_id, app_secret, event, trackers):
+    import urequests, json
+    url = 'https://api.instapush.im/v1/post'
+    headers = {'x-instapush-appid': app_id, 'x-instapush-appsecret': app_secret, 'Content-Type': "application/json"}
+    data = '{"event": "' +  event + '", "trackers": ' + json.dumps(trackers) + '}'
+    resp = urequests.post(url, data=data, headers=headers)
+
+    return resp.json()
