@@ -137,6 +137,7 @@ format_fs()
 You can use the InstaPush service to send push notifications to your mobile phone.
 
 + Go to the [Instapush](https://instapush.im) website and create an account. 
++ Download the Instapush app on your phone and login there as well
 + Once inside go to dashboard and create a new "application", give any name you like
 + In your new application create a new event
 + For the sake of this example name it "send_ip" (it can be anything you choose really)
