@@ -1,9 +1,8 @@
-import time, gc
+import gc
+from util.Log import Log
 
-def log(msg):
-    # TODO: Heavy to use ticks and concatenate each time. Need to find a better way
-    print(str(time.ticks_ms()) + " [INFO] "  + str(msg))
-
+# Logger
+log = Log()
 
 def scan_wifi():
     import network
@@ -19,19 +18,35 @@ def determine_preferred_wifi(configured, found):
     for j in found:
         for k, v in configured.items():
             if j[0].decode('UTF-8') == k:
-                log("Configured WiFi network '" + k + "' was found")
+                log.info("Configured WiFi network '" + k + "' was found")
                 connect_to = {"ssid" : k, "password" : v}
 
     return connect_to
 
-def connect_to_wifi(ssid, password):
-    import network
-    log("Attempting to connect to WiFi '" + ssid + "' with password '" + password +"'...")
+def connect_to_wifi(ssid, password, wait_for_ip=0):
+    import network, time
+    log.info("Attempting to connect to WiFi '" + ssid + "' with password '" + password +"'...")
     n = network.WLAN(network.STA_IF)
     n.active(True)
     n.connect(ssid, password)
 
-    return n.ifconfig()[0]
+    # Wait for IP address to be provided
+    count = 0
+    while not n.isconnected() and count < wait_for_ip:
+        log.info("Waiting to obtain IP ... (" + str(wait_for_ip - count) + " sec remaining)" )
+        time.sleep(1)
+        count += 1
+
+    # Get provided IP
+    ip = n.ifconfig()[0]
+
+    if ip == "0.0.0.0":
+        log.info("Could not obtain IP on '" + ssid + "'")
+    else:
+
+        log.info("Connected with IP '" + ip + "'")
+
+    return ip
 
 def blink_onboard_led(times, delay, led):
     import time
@@ -65,7 +80,7 @@ def load_properties(filepath, sep='=', comment_char='#', section_char='['):
 
 def format_fs():
     import uos
-    log("Formatting filesystem ...")
+    log.info("Formatting filesystem ...")
 
     while uos.listdir("/"):
         lst = uos.listdir("/")
@@ -73,14 +88,14 @@ def format_fs():
         while lst:
             try:
                 uos.remove(lst[0])
-                log("Removed '" + uos.getcwd() + "/" + lst[0] + "'")
+                log.info("Removed '" + uos.getcwd() + "/" + lst[0] + "'")
                 lst = uos.listdir(uos.getcwd())
             except:
-                log("Non-empty directory '" + uos.getcwd() + "/" + lst[0] + "' detected. Opening it...")
+                log.info("Non-empty directory '" + uos.getcwd() + "/" + lst[0] + "' detected. Opening it...")
                 uos.chdir(lst[0])
                 lst = uos.listdir(uos.getcwd())
 
-    log("Format completed successfully")
+    log.info("Format completed successfully")
 
 button_click_counter = {}
 
@@ -91,18 +106,18 @@ def get_button_clicks(btn, bcc_key):
         global button_click_counter
         button_click_counter[bcc_key] += 1
         if button_click_counter[bcc_key] == 1:
-            log("single-click registered (mem free: " + str(gc.mem_free()) + ")")
+            log.info("single-click registered (mem free: " + str(gc.mem_free()) + ")")
         elif button_click_counter[bcc_key] == 2:
-            log("double click registered (mem free: " + str(gc.mem_free()) + ")")
+            log.info("double click registered (mem free: " + str(gc.mem_free()) + ")")
         else:
-            log("lots of clicks! (mem free: " + str(gc.mem_free()) + ")")
+            log.info("lots of clicks! (mem free: " + str(gc.mem_free()) + ")")
 
         gtim = Timer(1)
         gtim.init(period=300, mode=Timer.ONE_SHOT, callback=lambda t:reset_button_click_counter(bcc_key))
 
 def reset_button_click_counter(bcc_key):
     global button_click_counter
-    log("FBC resetting to 0. Previous was " + str(button_click_counter[bcc_key]))
+    log.info("FBC resetting to 0. Previous was " + str(button_click_counter[bcc_key]))
     button_click_counter[bcc_key] = 0
     return button_click_counter[bcc_key]
 
