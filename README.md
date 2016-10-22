@@ -10,7 +10,7 @@ An open-source MicroPython based SDK for ESP8266 WiFi-enabled microcontrollers. 
 * Automated installation on the mirocontroller (see installation section using `mpfshell`)
 * Filesystem formatter cleans up your microcontroller - no need to reflash it
 * Send (Insta)Push notifications to your mobile phone straight from your microcontroller
-* Can be configured for any microcontroller (out of the box support for `NodeMCU`)
+* Can be configured for (potentially) any MicroPython enabled microcontroller (out of the box support for `NodeMCU`)
 * Simple logging functionality
 * Ability to read .properties files for configuration
 * Intended for use in both commercial and open-source projects.
@@ -137,6 +137,7 @@ format_fs()
 You can use the InstaPush service to send push notifications to your mobile phone.
 
 + Go to the [Instapush](https://instapush.im) website and create an account. 
++ Download the Instapush app on your phone and login there as well
 + Once inside go to dashboard and create a new "application", give any name you like
 + In your new application create a new event
 + For the sake of this example name it "send_ip" (it can be anything you choose really)
