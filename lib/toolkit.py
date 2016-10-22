@@ -1,8 +1,5 @@
 import gc
-from util.Log import Log
-
-# Logger
-log = Log()
+from lib.Kernel import Kernel
 
 def scan_wifi():
     import network
@@ -91,9 +88,15 @@ def format_fs():
                 log.info("Removed '" + uos.getcwd() + "/" + lst[0] + "'")
                 lst = uos.listdir(uos.getcwd())
             except:
-                log.info("Non-empty directory '" + uos.getcwd() + "/" + lst[0] + "' detected. Opening it...")
-                uos.chdir(lst[0])
+                dir = lst[0]
+                log.info("Directory '" + uos.getcwd() + "/" + dir + "' detected. Opening it...")
+                uos.chdir(dir)
                 lst = uos.listdir(uos.getcwd())
+                if len(lst) == 0:
+                    log.info("Directory '" + uos.getcwd() + "' is empty. Removing it...")
+                    uos.chdir("..")
+                    uos.rmdir(dir)
+                    break
 
     log.info("Format completed successfully")
 
@@ -102,7 +105,7 @@ button_click_counter = {}
 def get_button_clicks(btn, bcc_key):
     from machine import Timer
 
-    if (btn.value() == 0):
+    if btn.value() == 0:
         global button_click_counter
         button_click_counter[bcc_key] += 1
         if button_click_counter[bcc_key] == 1:
@@ -121,10 +124,11 @@ def reset_button_click_counter(bcc_key):
     button_click_counter[bcc_key] = 0
     return button_click_counter[bcc_key]
 
-def updateDuckDNS(domain, token, ip):
-    pass
+def update_duck_dns(domain, token, ip):
+    log.info("Updating DuckDNS service. (Domain: '" + domain + "' IP: '" + ip + "')")
+    http_get("https://www.duckdns.org/update?domains=" + domain + "&token=" + token + "&ip=" + ip)
 
-def sendInstapushNotification(app_id, app_secret, event, trackers):
+def send_instapush_notification(app_id, app_secret, event, trackers):
     import urequests, json
     url = 'https://api.instapush.im/v1/post'
     headers = {'x-instapush-appid': app_id, 'x-instapush-appsecret': app_secret, 'Content-Type': "application/json"}
@@ -132,3 +136,21 @@ def sendInstapushNotification(app_id, app_secret, event, trackers):
     resp = urequests.post(url, data=data, headers=headers)
 
     return resp.json()
+
+def http_get(url, debug=True):
+    import socket
+    _, _, host, path = url.split('/', 3)
+    addr = socket.getaddrinfo(host, 80)[0][-1]
+    s = socket.socket()
+    s.connect(addr)
+    s.send(bytes('GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n' % (path, host), 'utf8'))
+    while True and debug:
+        data = s.recv(100)
+        if data:
+            log.debug(str(data, 'utf8'))
+        else:
+            break
+
+# Initialize
+kernel = Kernel(load_properties("conf/os.properties"))
+log = kernel.logger

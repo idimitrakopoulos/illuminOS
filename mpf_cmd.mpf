@@ -1,12 +1,17 @@
-open ttyUSB1
+open ttyUSB0
 ls
+md lib
+md conf
+md hardware
 mput .*
-cd util
-lcd util
+cd lib
+lcd lib
 mput .*
-cd ..
-lcd ..
-cd conf
-lcd conf
+cd /conf
+lcd ../conf
 mput .*
+cd /hardware
+lcd ../hardware
+mput .*
+
 

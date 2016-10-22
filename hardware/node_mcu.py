@@ -13,13 +13,13 @@ user_button     = machine.Pin(GPIO16, machine.Pin.IN)
 flash_button    = machine.Pin(GPIO0, machine.Pin.IN)
 
 def blink_blue_led(times, delay):
-    import util.toolkit
-    util.toolkit.blink_onboard_led(times, delay, blue_led)
+    import lib.toolkit
+    lib.toolkit.blink_onboard_led(times, delay, blue_led)
 
 
 def get_flash_button_interrupts():
     from machine import Timer
-    from util.toolkit import get_button_clicks, button_click_counter
+    from lib.toolkit import get_button_clicks, button_click_counter
 
     button_click_counter['flash'] = 0
 
@@ -29,7 +29,7 @@ def get_flash_button_interrupts():
 
 def get_user_button_interrupts():
     from machine import Timer
-    from util.toolkit import get_button_clicks, button_click_counter
+    from lib.toolkit import get_button_clicks, button_click_counter
 
     button_click_counter['user'] = 0
 

@@ -45,9 +45,11 @@ A quick folder/file walkthrough of the project
 ```bash
 conf (all configuration files go here)
   network.properties (define your wifi networks here)
-util (utilities folder)
-  nodemcu.py (hardware mapping of NodeMCU board)
+hardware
+  node_mcu.py (hardware mapping of NodeMCU board)
   <yourboard.py> (you can write your own board mapping!)
+lib (utilities/libraries folder)
+  Logger.py (logger class)
   toolkit.py (a generic toolkit library that contains board agnostic functions)
 boot.py (gets executed first during boot-up)
 main.py (gets executed second)
@@ -60,7 +62,7 @@ illuminOS is open enough to allow the configuration and control of any ESP based
 
 To do this a new module must be created.
 
-e.g. `util/nodemcu.py`
+e.g. `hardware/node_mcu.py`
 
 In this file _board_ related configuration can be mapped and toolkit functions invoked. The concept is to abstract hardware mapping as much as possible from functionality.
 
@@ -79,7 +81,7 @@ worknet = "2334d"
 Then in `main.py` the following code must be copied. This will scan for known SSIDs as per the configuration above and connect to the first preferred network
 
 ```python
-from util.toolkit import log, load_properties, scan_wifi, determine_preferred_wifi, connect_to_wifi
+from lib.toolkit import log, load_properties, scan_wifi, determine_preferred_wifi, connect_to_wifi
 
 configured_wifis = load_properties("conf/network.properties")
 found_wifis = scan_wifi()
@@ -99,13 +101,13 @@ Following this event you could execute any code required by your project.
 For the **Flash** button use
 
 ```python
-import util.nodemcu as board
+import hardware.node_mcu as board
 board.get_flash_button_interrupts()
 ```
 And for the **User** button use 
 
 ```python
-import util.nodemcu as board
+import hardware.node_mcu as board
 board.get_user_button_interrupts()
 ```
 
@@ -116,7 +118,7 @@ board.get_user_button_interrupts()
 You can make the on-board LEDs flash as per requirement by using the following command.
 
 ```python
-import util.nodemcu as board
+import hardware.node_mcu as board
 board.blink_blue_led(15, 0.06)
 ```
 
@@ -127,7 +129,7 @@ board.blink_blue_led(15, 0.06)
 You can recursively wipe files and folders from your microcontroller using this function. 
 
 ```python
-from util.toolkit import format_fs
+from lib.toolkit import format_fs
 format_fs()
 ```
 ---
@@ -146,7 +148,7 @@ You can use the InstaPush service to send push notifications to your mobile phon
 + Save it and make note of your app ID and app Secret
 
 ```python
-from util.toolkit import sendInstapushNotification
+from lib.toolkit import sendInstapushNotification
 r = sendInstapushNotification("57f65af3455ag7848a96876hjf077c3", "ea456d8c303be4shhg56669339ca43b8", "send_ip", {'ip': ip})
 ```
 ---
@@ -156,7 +158,7 @@ r = sendInstapushNotification("57f65af3455ag7848a96876hjf077c3", "ea456d8c303be4
 In case you want to provide configuration using .properties files you can use the illuminOS method `load_properties`
 
 ```python
-from util.toolkit import load_properties
+from lib.toolkit import load_properties
 load_properties("conf/my.properties")
 ```
 ---
@@ -166,7 +168,7 @@ load_properties("conf/my.properties")
 A simple logging functionality exists  
 
 ```python
-from util.toolkit import log
+from lib.toolkit import log
 log.info("hello world!")
 log.warn("warning!")
 log.error("problem :(")

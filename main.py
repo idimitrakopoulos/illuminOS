@@ -1,7 +1,8 @@
-from util.toolkit import log, load_properties, scan_wifi, determine_preferred_wifi, connect_to_wifi
 import sys
-import util.nodemcu as board
 import micropython
+import hardware.node_mcu as board
+from lib.toolkit import log, load_properties, scan_wifi, determine_preferred_wifi, connect_to_wifi
+
 
 micropython.alloc_emergency_exception_buf(100)
 
@@ -17,8 +18,10 @@ log.info(version_info["name"] + " " + version_info["version"] + " running on "  
 configured_wifis = load_properties("conf/network.properties")
 found_wifis = scan_wifi()
 preferred_wifi = determine_preferred_wifi(configured_wifis, found_wifis)
-connect_to_wifi(preferred_wifi["ssid"], preferred_wifi["password"], 10)
+ip = connect_to_wifi(preferred_wifi["ssid"], preferred_wifi["password"], 10)
 
 
-# board.get_flash_button_interrupts()
-# board.get_user_button_interrupts()
+# hardware.get_flash_button_interrupts()
+# hardware.get_user_button_interrupts()
+
+
