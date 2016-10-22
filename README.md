@@ -167,7 +167,9 @@ A simple logging functionality exists
 
 ```python
 from util.toolkit import log
-log("hello world!")
+log.info("hello world!")
+log.warn("warning!")
+log.error("problem :(")
 ```
 
 # License
