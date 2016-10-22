@@ -10,6 +10,7 @@ An open-source MicroPython based SDK for ESP8266 WiFi-enabled microcontrollers. 
 * Automated installation on the mirocontroller (see installation section using `mpfshell`)
 * Filesystem formatter cleans up your microcontroller - no need to reflash it
 * Send (Insta)Push notifications to your mobile phone straight from your microcontroller
+* Use Dynamic DNS service (DuckDNS)
 * Can be configured for (potentially) any MicroPython enabled microcontroller (out of the box support for `NodeMCU`)
 * Simple logging functionality
 * Ability to read .properties files for configuration
