@@ -136,7 +136,7 @@ format_fs()
 
 You can use the InstaPush service to send push notifications to your mobile phone.
 
-+ Go to the [Instapush](https://instapush.im) website and create an account. 
++ Go to the [Instapush](https://instapush.im) website and create an account & login. 
 + Download the Instapush app on your phone and login there as well
 + Once inside go to dashboard and create a new "application", give any name you like
 + In your new application create a new event
@@ -145,9 +145,28 @@ You can use the InstaPush service to send push notifications to your mobile phon
 + Formulate your message as such "Hello, my IP address is {ip}"
 + Save it and make note of your app ID and app Secret
 
+Then use the following code in your main.py (or anywhere else!)
+
 ```python
-from util.toolkit import sendInstapushNotification
-r = sendInstapushNotification("57f65af3455ag7848a96876hjf077c3", "ea456d8c303be4shhg56669339ca43b8", "send_ip", {'ip': ip})
+from util.toolkit import send_instapush_notification
+r = send_instapush_notification("57f65af3455ag7848a96876hjf077c3", "ea456d8c303be4shhg56669339ca43b8", "send_ip", {'ip': ip})
+```
+---
+
+### Use Dynamic DNS (DuckDNS)
+
+You can use the DuckDNS service to keep your microcontroller always accessible externally.
+
++ Go to the [DuckDNS](https://www.duckdns.org) website and create an account & login. 
++ Once inside go to dashboard and create a new "domain", give any name you like
++ Make note of your token
+
+Then use the following code in your main.py (or anywhere else!)
+
+```python
+from util.toolkit import update_duck_dns
+ip = "204.212.12.98"
+update_duck_dns("illuminos", "be77b299-af11-0075-6ll2-599f09389n54", ip)
 ```
 ---
 
