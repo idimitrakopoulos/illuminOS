@@ -166,7 +166,7 @@ Then use the following code in your main.py (or anywhere else!)
 ```python
 from util.toolkit import update_duck_dns
 ip = "204.212.12.98"
-update_duck_dns("illuminos", "be77b299-af11-0075-6ll2-599f09389n54", ip)
+update_duck_dns("myduckdomain", "be77b299-af11-0075-6ll2-599f09389n54", ip)
 ```
 ---
 
