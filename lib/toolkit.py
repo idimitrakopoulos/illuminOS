@@ -1,4 +1,3 @@
-import gc
 from lib.Kernel import Kernel
 
 def scan_wifi():
@@ -45,19 +44,6 @@ def connect_to_wifi(ssid, password, wait_for_ip=0):
 
     return ip
 
-def blink_onboard_led(times, delay, led):
-    import time
-
-    # Do blinking
-    for i in range(times):
-        led.high()
-        time.sleep(delay)
-        led.low()
-        time.sleep(delay)
-
-    # Return to off state
-    led.high()
-
 
 def load_properties(filepath, sep='=', comment_char='#', section_char='['):
     """
@@ -75,54 +61,6 @@ def load_properties(filepath, sep='=', comment_char='#', section_char='['):
 
     return props
 
-def format_fs():
-    import uos
-    log.info("Formatting filesystem ...")
-
-    while uos.listdir("/"):
-        lst = uos.listdir("/")
-        uos.chdir("/")
-        while lst:
-            try:
-                uos.remove(lst[0])
-                log.info("Removed '" + uos.getcwd() + "/" + lst[0] + "'")
-                lst = uos.listdir(uos.getcwd())
-            except:
-                dir = lst[0]
-                log.info("Directory '" + uos.getcwd() + "/" + dir + "' detected. Opening it...")
-                uos.chdir(dir)
-                lst = uos.listdir(uos.getcwd())
-                if len(lst) == 0:
-                    log.info("Directory '" + uos.getcwd() + "' is empty. Removing it...")
-                    uos.chdir("..")
-                    uos.rmdir(dir)
-                    break
-
-    log.info("Format completed successfully")
-
-button_click_counter = {}
-
-def get_button_clicks(btn, bcc_key):
-    from machine import Timer
-
-    if btn.value() == 0:
-        global button_click_counter
-        button_click_counter[bcc_key] += 1
-        if button_click_counter[bcc_key] == 1:
-            log.info("single-click registered (mem free: " + str(gc.mem_free()) + ")")
-        elif button_click_counter[bcc_key] == 2:
-            log.info("double click registered (mem free: " + str(gc.mem_free()) + ")")
-        else:
-            log.info("lots of clicks! (mem free: " + str(gc.mem_free()) + ")")
-
-        gtim = Timer(1)
-        gtim.init(period=300, mode=Timer.ONE_SHOT, callback=lambda t:reset_button_click_counter(bcc_key))
-
-def reset_button_click_counter(bcc_key):
-    global button_click_counter
-    log.info("FBC resetting to 0. Previous was " + str(button_click_counter[bcc_key]))
-    button_click_counter[bcc_key] = 0
-    return button_click_counter[bcc_key]
 
 def update_duck_dns(domain, token, ip):
     log.info("Updating DuckDNS service. (Domain: '" + domain + "' IP: '" + ip + "')")
