@@ -89,7 +89,7 @@ ip = board.connect_to_wifi(preferred_wifi["ssid"], preferred_wifi["password"], 1
 
 To listen for clicks on the Flash button of your board, place the following snippet in your `main.py`. This places a polling timer which anticipates button clicks. Upon first click it very briefly waits for another click and then registers either a single or a double click.
 
-Following this event you could execute any code required by your project.
+Following this event you could execute any code required by your project on single or double click (you need to specify this function in `lib.toolkit` module).
 
 For the **Flash** button use
 
@@ -99,15 +99,15 @@ from hw.NodeMCU import NodeMCU
 # Instantiate our board
 board = NodeMCU()
 
-# Listen for events on FLASH button
-board.get_flash_button_events()
+# Listen for events on FLASH button and run "hello_world" function on single and double click
+board.get_flash_button_events("hello_world", "hello_world")
 
 ```
 And for the **User** button use 
 
 ```python
-# Listen for events on USER button
-board.get_user_button_events()
+# Listen for events on USER button and run "hello_world" function on single and double click
+board.get_user_button_events("hello_world", "hello_world")
 ```
 
 ---

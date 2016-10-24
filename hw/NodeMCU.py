@@ -39,22 +39,26 @@ class NodeMCU(Board):
     def blink_blue_led(self, times, delay):
         Board.blink_onboard_led(self, times, delay, self.get_pin("LED_BLUE"))
 
-    def get_flash_button_events(self):
+    def get_flash_button_events(self, on_single_click, on_double_click):
         from machine import Timer
 
         Board.button_click_counter['flash'] = 0
 
+        pin = self.get_pin("BTN_FLASH")
+
         tim = Timer(0)
-        tim.init(period=200, mode=Timer.PERIODIC, callback=lambda t: Board.get_onboard_button_events(self, self.get_pin("BTN_FLASH"), 'flash'))
+        tim.init(period=200, mode=Timer.PERIODIC, callback=lambda t: Board.get_onboard_button_events(self, pin, 'flash', on_single_click, on_double_click))
 
 
-    def get_user_button_events(self):
+    def get_user_button_events(self, on_single_click, on_double_click):
         from machine import Timer
 
         Board.button_click_counter['user'] = 0
 
+        pin = self.get_pin("BTN_USER")
+
         tim = Timer(0)
-        tim.init(period=200, mode=Timer.PERIODIC, callback=lambda t: Board.get_onboard_button_events(self, self.get_pin("BTN_USER"), 'user'))
+        tim.init(period=200, mode=Timer.PERIODIC, callback=lambda t: Board.get_onboard_button_events(self, pin, 'user', on_single_click, on_double_click))
 
 
     def scan_wifi(self):

@@ -19,3 +19,4 @@ preferred_wifi = determine_preferred_wifi(load_properties("conf/network.properti
 ip = board.connect_to_wifi(preferred_wifi["ssid"], preferred_wifi["password"], 10)
 
 
+# board.get_user_button_events("hello_world", "hello_world")

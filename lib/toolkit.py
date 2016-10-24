@@ -1,5 +1,21 @@
+import gc
+
 from lib.Kernel import Kernel
 
+
+def timed_function(f, *args, **kwargs):
+    import time
+    myname = str(f).split(' ')[1]
+    def new_func(*args, **kwargs):
+        t = time.ticks_us()
+        result = f(*args, **kwargs)
+        delta = time.ticks_diff(t, time.ticks_us())
+        log.debug('GC: ' + str(gc.mem_free()) + ' Function {} Time = {:6.3f}ms'.format(myname, delta/1000))
+        return result
+
+    return new_func
+
+# @timed_function
 def determine_preferred_wifi(configured, found):
     connect_to = {}
     for j in found:
@@ -9,7 +25,6 @@ def determine_preferred_wifi(configured, found):
                 connect_to = {"ssid" : k, "password" : v}
 
     return connect_to
-
 
 def load_properties(filepath, sep='=', comment_char='#', section_char='['):
     """
@@ -27,11 +42,12 @@ def load_properties(filepath, sep='=', comment_char='#', section_char='['):
 
     return props
 
-
+# @timed_function
 def update_duck_dns(domain, token, ip):
     log.info("Updating DuckDNS service. (Domain: '" + domain + "' IP: '" + ip + "')")
     http_get("https://www.duckdns.org/update?domains=" + domain + "&token=" + token + "&ip=" + ip)
 
+# @timed_function
 def send_instapush_notification(app_id, app_secret, event, trackers):
     import urequests, json
     url = 'https://api.instapush.im/v1/post'
@@ -41,6 +57,7 @@ def send_instapush_notification(app_id, app_secret, event, trackers):
 
     return resp.json()
 
+# @timed_function
 def http_get(url, debug=True):
     import socket
     _, _, host, path = url.split('/', 3)
@@ -55,6 +72,11 @@ def http_get(url, debug=True):
         else:
             break
     return s
+
+
+def hello_world():
+    log.info("HELLO WORLD!")
+
 
 # Initialize
 kernel = Kernel(load_properties("conf/os.properties"))

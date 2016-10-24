@@ -57,11 +57,11 @@ ip = board.connect_to_wifi(preferred_wifi["ssid"], preferred_wifi["password"], 1
 # Instantiate our board
 board = NodeMCU()
 
-# Listen for events on FLASH button
-board.get_flash_button_events()
+# Listen for events on FLASH button and run "hello_world" function on single and double click
+board.get_flash_button_events("hello_world", "hello_world")
 
-# Listen for events on USER button
-board.get_user_button_events()
+# Listen for events on USER button and run "hello_world" function on single and double click
+board.get_user_button_events("hello_world", "hello_world")
 
 
 # ----------------------------------------------------------------------------------------------------------------------
