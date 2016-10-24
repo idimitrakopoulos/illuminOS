@@ -1,7 +1,7 @@
 import sys
 from lib.toolkit import log, load_properties, scan_wifi, determine_preferred_wifi, connect_to_wifi
 
-from hardware.NodeMCU import NodeMCU
+from hw.NodeMCU import NodeMCU
 
 # Instantiate our board
 board = NodeMCU()

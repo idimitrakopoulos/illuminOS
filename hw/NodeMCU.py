@@ -1,4 +1,4 @@
-from hardware.Board import Board
+from hw.Board import Board
 import machine
 
 class NodeMCU(Board):
@@ -37,10 +37,19 @@ class NodeMCU(Board):
     def blink_blue_led(self, times, delay):
         Board.blink_onboard_led(self, times, delay, self.get_pin("LED_BLUE"))
 
-    def get_flash_button_interrupts(self):
+    def get_flash_button_events(self):
         from machine import Timer
 
         Board.button_click_counter['flash'] = 0
 
         tim = Timer(0)
-        tim.init(period=200, mode=Timer.PERIODIC, callback=lambda t: Board.get_button_clicks(self, self.get_pin("BTN_FLASH"), 'flash'))
+        tim.init(period=200, mode=Timer.PERIODIC, callback=lambda t: Board.get_onboard_button_events(self, self.get_pin("BTN_FLASH"), 'flash'))
+
+
+    def get_user_button_events(self):
+        from machine import Timer
+
+        Board.button_click_counter['user'] = 0
+
+        tim = Timer(0)
+        tim.init(period=200, mode=Timer.PERIODIC, callback=lambda t: Board.get_onboard_button_events(self, self.get_pin("BTN_USER"), 'user'))

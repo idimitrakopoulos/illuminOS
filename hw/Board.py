@@ -36,7 +36,7 @@ class Board:
         # Return to off state
         led.high()
 
-    def get_button_clicks(self, btn, bcc_key):
+    def get_onboard_button_events(self, btn, bcc_key):
         from machine import Timer
 
         if btn.value() == 0:
@@ -50,9 +50,9 @@ class Board:
                 log.info("lots of clicks! (mem free: " + str(gc.mem_free()) + ")")
 
             gtim = Timer(1)
-            gtim.init(period=300, mode=Timer.ONE_SHOT, callback=lambda t:self.reset_button_click_counter(bcc_key))
+            gtim.init(period=300, mode=Timer.ONE_SHOT, callback=lambda t:self.reset_onboard_button_event_counter(bcc_key))
 
-    def reset_button_click_counter(self, bcc_key):
+    def reset_onboard_button_event_counter(self, bcc_key):
         # global button_click_counter
         log.info("FBC resetting to 0. Previous was " + str(self.button_click_counter[bcc_key]))
         self.button_click_counter[bcc_key] = 0
@@ -82,3 +82,5 @@ class Board:
                         break
 
         log.info("Format completed successfully")
+
+
