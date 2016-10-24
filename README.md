@@ -49,11 +49,11 @@ The user is free to utilize the functionality offered by illuminOS freely and at
 
 illuminOS is open enough to allow the configuration and control of any ESP based microcontroller. At this point only nodeMCU has been configured by the author but other controllers can be contributed by users. 
 
-To do this a new module must be created.
+To do this a new board class must be created that inherits from hw.Board.
 
-e.g. `hardware/node_mcu.py`
+e.g. `hw/NodeMCU.py`
 
-In this file _board_ related configuration can be mapped and toolkit functions invoked. The concept is to abstract hardware mapping as much as possible from functionality.
+In this class _board_ related configuration can be mapped and Board functions invoked. The concept is to abstract hardware mapping as much as possible from functionality.
 
 ## Examples
 
