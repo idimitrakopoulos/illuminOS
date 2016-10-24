@@ -1,7 +1,7 @@
 import sys
-from lib.toolkit import log, load_properties, scan_wifi, determine_preferred_wifi, connect_to_wifi
 
 from hw.NodeMCU import NodeMCU
+from lib.toolkit import log, load_properties, determine_preferred_wifi
 
 # Instantiate our board
 board = NodeMCU()
@@ -15,9 +15,7 @@ log.info(version_info["name"] + " " + version_info["version"] + " running on "  
 
 
 # Connect to WiFi
-configured_wifis = load_properties("conf/network.properties")
-found_wifis = scan_wifi()
-preferred_wifi = determine_preferred_wifi(configured_wifis, found_wifis)
-ip = connect_to_wifi(preferred_wifi["ssid"], preferred_wifi["password"], 10)
+preferred_wifi = determine_preferred_wifi(load_properties("conf/network.properties"), board.scan_wifi())
+ip = board.connect_to_wifi(preferred_wifi["ssid"], preferred_wifi["password"], 10)
 
 

@@ -17,10 +17,20 @@ log = kernel.logger
 # Logger
 # ----------------------------------------------------------------------------------------------------------------------
 import gc
+from lib.Logger import Logger
+log = Logger()
+
 log.info("Hello!")
 log.error("Critical Issue!!")
 log.debug("Free memory: " + str(gc.free_mem()))
 
+# ----------------------------------------------------------------------------------------------------------------------
+# Update DuckDNS
+# ----------------------------------------------------------------------------------------------------------------------
+from lib.toolkit import update_duck_dns
+
+# Update DuckDNS service
+update_duck_dns("mydomain", "mytoken", "192.168.0.10")
 
 # ----------------------------------------------------------------------------------------------------------------------
 #
@@ -28,6 +38,18 @@ log.debug("Free memory: " + str(gc.free_mem()))
 #
 # ----------------------------------------------------------------------------------------------------------------------
 from hw.NodeMCU import NodeMCU
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Connect to user preferred WiFi
+# ----------------------------------------------------------------------------------------------------------------------
+# Instantiate our board
+board = NodeMCU()
+
+# Find preferred wifi
+preferred_wifi = determine_preferred_wifi(load_properties("conf/network.properties"), board.scan_wifi())
+
+# Get IP
+ip = board.connect_to_wifi(preferred_wifi["ssid"], preferred_wifi["password"], 10)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Button event listener
@@ -59,3 +81,4 @@ board = NodeMCU()
 
 # Request format - this will wipe all the filesystem
 board.format()
+

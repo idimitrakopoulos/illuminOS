@@ -10,6 +10,7 @@ An open-source MicroPython based SDK for ESP8266 WiFi-enabled microcontrollers. 
 * Automated installation on the mirocontroller (see installation section using `mpfshell`)
 * Filesystem formatter cleans up your microcontroller - no need to reflash it
 * Send (Insta)Push notifications to your mobile phone straight from your microcontroller
+* Update a Dynamic DNS service (DuckDNS) so that your microcontroller is always available online
 * Can be configured for (potentially) any MicroPython enabled microcontroller (out of the box support for `NodeMCU`)
 * Simple logging functionality
 * Ability to read .properties files for configuration
@@ -32,29 +33,17 @@ After installing mpfshell you should connect your PC and microntroller via USB a
 
 ```bash
 $ cd illuminOS
-$ sudo mpfshell -s mpf_cmd.mpf
+$ sudo mpfshell -s upload.mpf
 ```
-If the device connects to another path then simply edit `mpf_cmd.mpf` and replace `/dev/ttyUSB0` before running the above command.
+If the device connects to another path then simply edit `upload.mpf` and replace `/dev/ttyUSB0` to the proper device before running the above command.
 
 Of course you can also upload `illuminOS` manually or using one of your favorite IDEs (e.g. ESPlorer) 
 
 ## Project Structure
 
-A quick folder/file walkthrough of the project
+Both boot strap files `main.py` and `boot.py` are intentionally left empty.
 
-```bash
-conf (all configuration files go here)
-  network.properties (define your wifi networks here)
-hardware
-  node_mcu.py (hardware mapping of NodeMCU board)
-  <yourboard.py> (you can write your own board mapping!)
-lib (utilities/libraries folder)
-  Logger.py (logger class)
-  toolkit.py (a generic toolkit library that contains board agnostic functions)
-boot.py (gets executed first during boot-up)
-main.py (gets executed second)
-```
-The user is free to utilize the functionalitu offered by illuminOS freely and at any point. It certainly makes sense however to play with some of the examples below by adding code inside `main.py` or `boot.py`.
+The user is free to utilize the functionality offered by illuminOS freely and at any point. It certainly makes sense however, to play with some of the examples below.
 
 ## Microcontroller Support
 
@@ -81,14 +70,18 @@ worknet = "2334d"
 Then in `main.py` the following code must be copied. This will scan for known SSIDs as per the configuration above and connect to the first preferred network
 
 ```python
-from lib.toolkit import log, load_properties, scan_wifi, determine_preferred_wifi, connect_to_wifi
+from hw.NodeMCU import NodeMCU
 
-configured_wifis = load_properties("conf/network.properties")
-found_wifis = scan_wifi()
-preferred_wifi = determine_preferred_wifi(configured_wifis, found_wifis)
-ip = connect_to_wifi(preferred_wifi["ssid"], preferred_wifi["password"])
+# Instantiate our board
+board = NodeMCU()
 
-log("Connected with IP: " + ip)
+# Find preferred wifi
+preferred_wifi = determine_preferred_wifi(load_properties("conf/network.properties"), board.scan_wifi())
+
+# Get IP
+ip = board.connect_to_wifi(preferred_wifi["ssid"], preferred_wifi["password"], 10)
+
+
 ```
 ---
 
@@ -101,14 +94,20 @@ Following this event you could execute any code required by your project.
 For the **Flash** button use
 
 ```python
-import hardware.node_mcu as board
-board.get_flash_button_interrupts()
+from hw.NodeMCU import NodeMCU
+
+# Instantiate our board
+board = NodeMCU()
+
+# Listen for events on FLASH button
+board.get_flash_button_events()
+
 ```
 And for the **User** button use 
 
 ```python
-import hardware.node_mcu as board
-board.get_user_button_interrupts()
+# Listen for events on USER button
+board.get_user_button_events()
 ```
 
 ---
@@ -118,8 +117,14 @@ board.get_user_button_interrupts()
 You can make the on-board LEDs flash as per requirement by using the following command.
 
 ```python
-import hardware.node_mcu as board
-board.blink_blue_led(15, 0.06)
+from hw.NodeMCU import NodeMCU
+
+# Instantiate our board
+board = NodeMCU()
+
+# Blink BLUE LED 5 times with 0.5 sec delay
+board.blink_blue_led(5, 0.5)
+
 ```
 
 ---
@@ -129,8 +134,14 @@ board.blink_blue_led(15, 0.06)
 You can recursively wipe files and folders from your microcontroller using this function. 
 
 ```python
-from lib.toolkit import format_fs
-format_fs()
+from hw.NodeMCU import NodeMCU
+
+# Instantiate our board
+board = NodeMCU()
+
+# Request format - this will wipe all the filesystem
+board.format()
+
 ```
 ---
 
@@ -146,10 +157,28 @@ You can use the InstaPush service to send push notifications to your mobile phon
 + Add a tracker called "ip"
 + Formulate your message as such "Hello, my IP address is {ip}"
 + Save it and make note of your app ID and app Secret
+* Add the following to your code
 
 ```python
 from lib.toolkit import sendInstapushNotification
 r = sendInstapushNotification("57f65af3455ag7848a96876hjf077c3", "ea456d8c303be4shhg56669339ca43b8", "send_ip", {'ip': ip})
+```
+---
+
+### Update Dynamic DNS (DuckDNS)
+
+You can use the InstaPush service to send push notifications to your mobile phone.
+
++ Go to the [DuckDNS](https://duckdns.org) website and create an account. 
++ Once inside go to dashboard and create a new "domain", give any name you like
++ Save it and make note of your token id
+* Add the following to your code
+
+```python
+from lib.toolkit import update_duck_dns
+
+# Update DuckDNS service
+update_duck_dns("mydomain", "mytoken", "192.168.0.10")
 ```
 ---
 
@@ -168,10 +197,14 @@ load_properties("conf/my.properties")
 A simple logging functionality exists  
 
 ```python
-from lib.toolkit import log
-log.info("hello world!")
-log.warn("warning!")
-log.error("problem :(")
+import gc
+
+from lib.Logger import Logger
+log = Logger()
+
+log.info("Hello!")
+log.error("Critical Issue!!")
+log.debug("Free memory: " + str(gc.free_mem()))
 ```
 
 # License

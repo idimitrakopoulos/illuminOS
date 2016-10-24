@@ -1,14 +1,5 @@
 from lib.Kernel import Kernel
 
-def scan_wifi():
-    import network
-
-    n = network.WLAN(network.STA_IF)
-    n.active(True)
-
-    return n.scan()
-
-
 def determine_preferred_wifi(configured, found):
     connect_to = {}
     for j in found:
@@ -18,31 +9,6 @@ def determine_preferred_wifi(configured, found):
                 connect_to = {"ssid" : k, "password" : v}
 
     return connect_to
-
-def connect_to_wifi(ssid, password, wait_for_ip=0):
-    import network, time
-    log.info("Attempting to connect to WiFi '" + ssid + "' with password '" + password +"'...")
-    n = network.WLAN(network.STA_IF)
-    n.active(True)
-    n.connect(ssid, password)
-
-    # Wait for IP address to be provided
-    count = 0
-    while not n.isconnected() and count < wait_for_ip:
-        log.info("Waiting to obtain IP ... (" + str(wait_for_ip - count) + " sec remaining)" )
-        time.sleep(1)
-        count += 1
-
-    # Get provided IP
-    ip = n.ifconfig()[0]
-
-    if ip == "0.0.0.0":
-        log.info("Could not obtain IP on '" + ssid + "'")
-    else:
-
-        log.info("Connected with IP '" + ip + "'")
-
-    return ip
 
 
 def load_properties(filepath, sep='=', comment_char='#', section_char='['):
@@ -88,6 +54,7 @@ def http_get(url, debug=True):
             log.debug(str(data, 'utf8'))
         else:
             break
+    return s
 
 # Initialize
 kernel = Kernel(load_properties("conf/os.properties"))

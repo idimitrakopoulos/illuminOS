@@ -1,5 +1,7 @@
-from hw.Board import Board
 import machine
+
+from hw.Board import Board
+
 
 class NodeMCU(Board):
 
@@ -53,3 +55,12 @@ class NodeMCU(Board):
 
         tim = Timer(0)
         tim.init(period=200, mode=Timer.PERIODIC, callback=lambda t: Board.get_onboard_button_events(self, self.get_pin("BTN_USER"), 'user'))
+
+
+    def scan_wifi(self):
+        import network
+        return Board.scan_wifi(self, network.STA_IF)
+
+    def connect_to_wifi(self, ssid, password, wait_for_ip):
+        import network
+        return Board.connect_to_wifi(self, ssid, password, network.STA_IF, wait_for_ip)

@@ -1,5 +1,7 @@
 import gc
+
 from lib.toolkit import log
+
 
 class Board:
     pin_mapping = []
@@ -23,6 +25,39 @@ class Board:
     def get_pin_value(self, pin):
         return pin.value()
 
+    def scan_wifi(self, mode):
+        import network
+
+        n = network.WLAN(mode)
+
+        return n.scan()
+
+    def connect_to_wifi(self, ssid, password, mode, wait_for_ip=0):
+        import network, time
+
+        log.info("Attempting to connect to WiFi '" + ssid + "' with password '" + password + "'...")
+        n = network.WLAN(mode)
+        n.active(True)
+        n.connect(ssid, password)
+
+        # Wait for IP address to be provided
+        count = 0
+        while not n.isconnected() and count < wait_for_ip:
+            log.info("Waiting to obtain IP ... (" + str(wait_for_ip - count) + " sec remaining)")
+            time.sleep(1)
+            count += 1
+
+        # Get provided IP
+        ip = n.ifconfig()[0]
+
+        if ip == "0.0.0.0":
+            log.info("Could not obtain IP on '" + ssid + "'")
+        else:
+
+            log.info("Connected with IP '" + ip + "'")
+
+        return ip
+
     def blink_onboard_led(self, times, delay, led):
         import time
 
@@ -40,7 +75,6 @@ class Board:
         from machine import Timer
 
         if btn.value() == 0:
-            # global button_click_counter
             self.button_click_counter[bcc_key] += 1
             if self.button_click_counter[bcc_key] == 1:
                 log.info("single-click registered (mem free: " + str(gc.mem_free()) + ")")
@@ -53,7 +87,6 @@ class Board:
             gtim.init(period=300, mode=Timer.ONE_SHOT, callback=lambda t:self.reset_onboard_button_event_counter(bcc_key))
 
     def reset_onboard_button_event_counter(self, bcc_key):
-        # global button_click_counter
         log.info("FBC resetting to 0. Previous was " + str(self.button_click_counter[bcc_key]))
         self.button_click_counter[bcc_key] = 0
         return self.button_click_counter[bcc_key]

@@ -2,7 +2,7 @@ open ttyUSB0
 ls
 md lib
 md conf
-md hardware
+md hw
 mput .*
 cd lib
 lcd lib
@@ -10,8 +10,8 @@ mput .*
 cd /conf
 lcd ../conf
 mput .*
-cd /hardware
-lcd ../hardware
+cd /hw
+lcd ../hw
 mput .*
 
 
