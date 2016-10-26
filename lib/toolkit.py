@@ -44,7 +44,7 @@ def load_properties(filepath, sep='=', comment_char='#', section_char='['):
 
 def get_public_ip():
     import urequests, json
-    url = 'https://api.ipify.org/'
+    url = 'https://api.ipify.org/?format=json'
     resp = urequests.post(url)
     if resp:
     	json = resp.json()
