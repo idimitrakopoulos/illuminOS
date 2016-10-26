@@ -11,3 +11,7 @@ python:
   - "nightly" # currently points to 3.7-dev
 # command to run tests
 script: nosetests
+
+# Notifications
+notifications:
+  email: false

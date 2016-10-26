@@ -1,0 +1,17 @@
+open ttyUSB0
+ls
+md lib
+md conf
+md hw
+mput .*
+cd lib
+lcd lib
+mput .*
+cd /conf
+lcd ../conf
+mput .*
+cd /hw
+lcd ../hw
+mput .*
+
+
