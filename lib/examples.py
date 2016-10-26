@@ -30,7 +30,7 @@ log.debug("Free memory: " + str(gc.free_mem()))
 from lib.toolkit import update_duck_dns
 
 # Update DuckDNS service
-update_duck_dns("mydomain", "mytoken", "192.168.0.10")
+update_duck_dns("mydomain", "mytoken")
 
 # ----------------------------------------------------------------------------------------------------------------------
 #
