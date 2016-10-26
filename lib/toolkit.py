@@ -42,10 +42,24 @@ def load_properties(filepath, sep='=', comment_char='#', section_char='['):
 
     return props
 
+def get_public_ip():
+    import urequests, json
+    url = 'https://api.ipify.org/?format=json'
+    resp = urequests.post(url)
+    if resp:
+    	json = resp.json()
+    	return json["ip"]
+    else:
+    	return ''
+
 # @timed_function
-def update_duck_dns(domain, token, ip):
-    log.info("Updating DuckDNS service. (Domain: '" + domain + "' IP: '" + ip + "')")
-    http_get("https://www.duckdns.org/update?domains=" + domain + "&token=" + token + "&ip=" + ip)
+def update_duck_dns(domain, token):
+	ip = get_public_ip()
+	if ip != '':
+	    log.info("Updating DuckDNS service. (Domain: '" + domain + "' IP: '" + ip + "')")
+	    http_get("https://www.duckdns.org/update?domains=" + domain + "&token=" + token + "&ip=" + ip)
+	else:
+	    log.info("Updating DuckDNS service failed. Cannot resolve public ip.")
 
 # @timed_function
 def send_instapush_notification(app_id, app_secret, event, trackers):
