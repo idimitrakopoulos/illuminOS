@@ -8,8 +8,16 @@ class NodeMCU(Board):
     pins = {
 
         "BTN_FLASH" :   machine.Pin(0, machine.Pin.IN),
-        "BTN_USER"  :   machine.Pin(16, machine.Pin.IN),
+        "GPIO1"     :   machine.Pin(1, machine.Pin.IN),
         "LED_BLUE"  :   machine.Pin(2, machine.Pin.OUT),
+        "GPIO3"     :   machine.Pin(3, machine.Pin.IN),
+        "GPIO4"     :   machine.Pin(4, machine.Pin.IN),
+        "GPIO5"     :   machine.Pin(5, machine.Pin.IN),
+        "GPIO12"    :   machine.Pin(12, machine.Pin.IN),
+        "GPIO13"    :   machine.Pin(13, machine.Pin.IN),
+        "GPIO14"    :   machine.Pin(14, machine.Pin.IN),
+        "GPIO15"    :   machine.Pin(15, machine.Pin.IN),
+        "BTN_USER"  :   machine.Pin(16, machine.Pin.IN),
 
     }
 

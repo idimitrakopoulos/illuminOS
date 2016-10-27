@@ -1,6 +1,7 @@
 # illuminOS
 
-An open-source MicroPython based SDK for ESP8266 WiFi-enabled microcontrollers. It enables you to focus on your actual project by providing ready-made functionality for tedious stuff.
+An open-source MicroPython based OS for WiFi-enabled microcontrollers.
+It enables you to focus on your actual project by providing ready-made functionality for tedious stuff.
 
 ## Main Features
 
