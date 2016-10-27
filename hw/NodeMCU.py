@@ -24,27 +24,24 @@ class NodeMCU(Board):
     def set_pin_mapping(self, pin_mapping):
         Board.set_pin_mapping(self, pin_mapping)
 
+    def get_pin_by_key(self, pin_key):
+        return Board.get_pin_by_key(self, pin_key)
 
-    def get_pin(self, pin_key):
-        return Board.get_pin_mapping(self)[pin_key]
-
-
-    def set_pin(self, pin_key, pin_value):
-        Board.set_pin(self, pin_key, pin_value)
-
+    def set_pin(self, pin_key, pin):
+        Board.set_pin(self, pin_key, pin)
 
     def get_pin_value(self, pin):
         return Board.get_pin_value(self, pin)
 
     def blink_blue_led(self, times, delay):
-        Board.blink_onboard_led(self, times, delay, self.get_pin("LED_BLUE"))
+        Board.blink_onboard_led(self, times, delay, self.get_pin_by_key("LED_BLUE"))
 
     def get_flash_button_events(self, on_single_click, on_double_click):
         from machine import Timer
 
         Board.button_click_counter['flash'] = 0
 
-        pin = self.get_pin("BTN_FLASH")
+        pin = self.get_pin_by_key("BTN_FLASH")
 
         tim = Timer(0)
         tim.init(period=200, mode=Timer.PERIODIC, callback=lambda t: Board.get_onboard_button_events(self, pin, 'flash', on_single_click, on_double_click))
@@ -55,7 +52,7 @@ class NodeMCU(Board):
 
         Board.button_click_counter['user'] = 0
 
-        pin = self.get_pin("BTN_USER")
+        pin = self.get_pin_by_key("BTN_USER")
 
         tim = Timer(0)
         tim.init(period=200, mode=Timer.PERIODIC, callback=lambda t: Board.get_onboard_button_events(self, pin, 'user', on_single_click, on_double_click))

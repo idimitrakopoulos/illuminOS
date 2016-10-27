@@ -21,12 +21,12 @@ class Board:
         self.pin_mapping = pin_mapping
 
     # @timed_function
-    def get_pin(self, pin_key):
+    def get_pin_by_key(self, pin_key):
         return self.pin_mapping[pin_key]
 
     # @timed_function
-    def set_pin(self, pin_key, pin_value):
-        self.pin_mapping[pin_key] = pin_value
+    def set_pin(self, pin_key, pin):
+        self.pin_mapping[pin_key] = pin
 
     # @timed_function
     def get_pin_value(self, pin):
