@@ -205,6 +205,9 @@ board = NodeMCU()
 
 # Memory collection and reporting will occur every 10 sec
 board.start_memory_manager(10000)
+
+# Or you can run memory manager ad hoc
+board.mem_cleanup()
 ```
 ---
 
