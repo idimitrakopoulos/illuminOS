@@ -15,6 +15,7 @@ It enables you to focus on your actual project by providing ready-made functiona
 * Can be configured for (potentially) any MicroPython enabled microcontroller (out of the box support for `NodeMCU`)
 * Simple logging functionality
 * Ability to read .properties files for configuration
+* Memory manager that periodically calls garbage collector
 * Intended for use in both commercial and open-source projects.
 
 ## Resources
@@ -190,6 +191,20 @@ In case you want to provide configuration using .properties files you can use th
 ```python
 from lib.toolkit import load_properties
 load_properties("conf/my.properties")
+```
+---
+
+### Memory Manager
+
+Garbage collection is better performed before it's needed, the memory manager periodically runs and collects garbage plus it reports if memory is low
+
+```python
+from hw.NodeMCU import NodeMCU
+# Instantiate our board
+board = NodeMCU()
+
+# Memory collection and reporting will occur every 10 sec
+board.start_memory_manager(10000)
 ```
 ---
 

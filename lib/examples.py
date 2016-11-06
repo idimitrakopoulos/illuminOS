@@ -82,3 +82,11 @@ board = NodeMCU()
 # Request format - this will wipe all the filesystem
 board.format()
 
+# ----------------------------------------------------------------------------------------------------------------------
+# Start Memory Manager
+# ----------------------------------------------------------------------------------------------------------------------
+# Instantiate our board
+board = NodeMCU()
+
+# Memory collection and reporting will occur every 10 sec
+board.start_memory_manager(10000)
