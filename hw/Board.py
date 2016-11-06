@@ -135,3 +135,36 @@ class Board:
         log.info("Format completed successfully")
 
 
+    def start_memory_manager(self, period=5000):
+        from machine import Timer
+
+        tim = Timer(0)
+        tim.init(period=period, mode=Timer.PERIODIC, callback=lambda t: self.mem_cleanup())
+
+
+    def mem_cleanup(self):
+        log.debug("Invoking garbage collection ...")
+        gc.collect()
+        mem = gc.mem_free()
+        if 6001 <= mem <= 10000:
+            log.warn("Memory is low: " + str(mem))
+        elif 4001 <= mem <= 6000:
+            log.warn("Memory is very low: " + str(mem))
+        elif mem < 4000:
+            log.critical("Memory is extremely low: " + str(mem))
+        else:
+            log.debug("Memory is currently: " + str(mem))
+
+
+    def get_public_ip(self):
+        from lib.toolkit import http_get
+        """
+        This is a rather hacky way to get the external IP
+        but it avoids importing urequests module which is heavy on mem usage.
+        """
+        s = http_get("http://myexternalip.com/raw")
+        ip = ""
+        for x in range(0, 10):
+            ip = (s.readline().decode('ascii')).strip("\n")
+
+        return ip
