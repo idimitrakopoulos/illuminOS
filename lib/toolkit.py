@@ -42,24 +42,11 @@ def load_properties(filepath, sep='=', comment_char='#', section_char='['):
 
     return props
 
-def get_public_ip():
-    import urequests, json
-    url = 'https://api.ipify.org/?format=json'
-    resp = urequests.post(url)
-    if resp:
-    	json = resp.json()
-    	return json["ip"]
-    else:
-    	return ''
 
 # @timed_function
-def update_duck_dns(domain, token):
-	ip = get_public_ip()
-	if ip != '':
-	    log.info("Updating DuckDNS service. (Domain: '" + domain + "' IP: '" + ip + "')")
-	    http_get("https://www.duckdns.org/update?domains=" + domain + "&token=" + token + "&ip=" + ip)
-	else:
-	    log.info("Updating DuckDNS service failed. Cannot resolve public ip.")
+def update_duck_dns(domain, token, ip):
+    log.info("Updating DuckDNS service. (Domain: '" + domain + "' IP: '" + ip + "')")
+    return http_get("https://www.duckdns.org/update?domains=" + domain + "&token=" + token + "&ip=" + ip)
 
 # @timed_function
 def send_instapush_notification(app_id, app_secret, event, trackers):
@@ -79,12 +66,7 @@ def http_get(url, debug=True):
     s = socket.socket()
     s.connect(addr)
     s.send(bytes('GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n' % (path, host), 'utf8'))
-    while True and debug:
-        data = s.recv(100)
-        if data:
-            log.debug(str(data, 'utf8'))
-        else:
-            break
+
     return s
 
 
