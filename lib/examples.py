@@ -8,7 +8,7 @@
 # Initialize OS
 # ----------------------------------------------------------------------------------------------------------------------
 from lib.Kernel import Kernel
-from lib.toolkit import load_properties
+from lib.toolkit import load_properties, determine_preferred_wifi
 # Start-up Kernel
 kernel = Kernel(load_properties("conf/os.properties"))
 log = kernel.logger
@@ -18,11 +18,11 @@ log = kernel.logger
 # ----------------------------------------------------------------------------------------------------------------------
 import gc
 from lib.Logger import Logger
-log = Logger()
+log = Logger("DEBUG")
 
 log.info("Hello!")
 log.error("Critical Issue!!")
-log.debug("Free memory: " + str(gc.free_mem()))
+log.debug("Free memory: " + str(gc.mem_free()))
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Update DuckDNS
@@ -30,7 +30,7 @@ log.debug("Free memory: " + str(gc.free_mem()))
 from lib.toolkit import update_duck_dns
 
 # Update DuckDNS service
-update_duck_dns("mydomain", "mytoken")
+update_duck_dns("mydomain", "mytoken", "myip")
 
 # ----------------------------------------------------------------------------------------------------------------------
 #
