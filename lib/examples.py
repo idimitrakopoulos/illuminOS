@@ -37,7 +37,7 @@ update_duck_dns("mydomain", "mytoken", "myip")
 # NodeMCU Examples
 #
 # ----------------------------------------------------------------------------------------------------------------------
-from hw.NodeMCU import NodeMCU
+from hw.board.NodeMCU import NodeMCU
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Connect to user preferred WiFi
@@ -82,7 +82,7 @@ board = NodeMCU()
 # Request format - this will wipe all the filesystem
 board.format()
 
-# ----------------------------------------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------------------------------------------------
 # Start Memory Manager
 # ----------------------------------------------------------------------------------------------------------------------
 # Instantiate our board
@@ -90,3 +90,28 @@ board = NodeMCU()
 
 # Memory collection and reporting will occur every 10 sec
 board.start_memory_manager(10000)
+
+# Or you can run memory manager ad hoc
+board.mem_cleanup()
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Drive Humidity/Temperature sensor (DHT11 or DHT22)
+# ----------------------------------------------------------------------------------------------------------------------
+from hw.sensor.DHT import DHT
+import machine
+
+# Instantiate our sensor
+d = DHT("DHT11", machine.Pin(10))
+
+# Get temperature in Celsius
+d.get_temperature()
+
+# Get temperature in Fahrenheit
+d.get_temperature("F")
+
+# Get temperature numeric in Celsius
+d.get_temperature("C", False)
+
+# Get temperature numeric in Fahrenheit
+d.get_temperature("F", False)

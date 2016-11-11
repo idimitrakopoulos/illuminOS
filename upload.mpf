@@ -13,5 +13,20 @@ mput .*
 cd /hw
 lcd ../hw
 mput .*
+md screen
+cd screen
+lcd screen
+mput .*
+cd ..
+md board
+cd board
+lcd ../board
+mput .*
+cd ..
+md sensor
+cd sensor
+lcd ../sensor
+mput .*
+
 
 

@@ -1,6 +1,8 @@
+import machine
 import sys
 
-from hw.NodeMCU import NodeMCU
+from hw.board.NodeMCU import NodeMCU
+from hw.sensor.DHT import DHT
 from lib.toolkit import log, load_properties, determine_preferred_wifi
 
 # Instantiate our board
@@ -20,3 +22,5 @@ ip = board.connect_to_wifi(preferred_wifi["ssid"], preferred_wifi["password"], 1
 
 
 # board.get_user_button_events("hello_world", "hello_world")
+d = DHT("DHT11", machine.Pin(10))
+d.get_temperature()

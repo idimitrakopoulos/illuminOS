@@ -1,6 +1,6 @@
 import machine
 
-from hw.Board import Board
+from hw.board.Board import Board
 
 
 class NodeMCU(Board):

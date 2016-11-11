@@ -74,6 +74,14 @@ def hello_world():
     log.info("HELLO WORLD!")
 
 
+def find_enum_id(enum, key):
+    result = 0
+    for i in enum:
+        if i[1] == key:
+            result = i[0]
+
+    return result
+
 # Initialize
 kernel = Kernel(load_properties("conf/os.properties"))
 log = kernel.logger
