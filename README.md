@@ -18,6 +18,10 @@ It enables you to focus on your actual project by providing ready-made functiona
 * Memory manager that periodically calls garbage collector
 * Intended for use in both commercial and open-source projects.
 
+## Drive Sensors & Other Hardware
+
+* Drive DHT11 and DHT22 (both sensors for humidity and temperature) using cool wrappers for the MicroPython drivers
+
 ## Resources
 
 Github issues list/bugtracker: https://github.com/idimitrakopoulos/illuminOS/issues
@@ -224,6 +228,32 @@ log = Logger()
 log.info("Hello!")
 log.error("Critical Issue!!")
 log.debug("Free memory: " + str(gc.free_mem()))
+```
+
+# Hardware
+
+### Temperature & Humidity sensor (DHTxx)
+
+Drive the DHT11 and DHT22 sensors using cool wrappers for the Micropython drivers
+
+```python
+from hw.sensor.DHT import DHT
+import machine
+
+# Instantiate our sensor
+d = DHT("DHT11", machine.Pin(10))
+
+# Get temperature in Celsius
+d.get_temperature()
+
+# Get temperature in Fahrenheit
+d.get_temperature("F")
+
+# Get temperature numeric in Celsius
+d.get_temperature("C", False)
+
+# Get temperature numeric in Fahrenheit
+d.get_temperature("F", False)
 ```
 
 # License
