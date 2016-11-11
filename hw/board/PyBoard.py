@@ -1,6 +1,6 @@
 import pyb
 
-from hw.Board import Board
+from hw.board.Board import Board
 
 
 class PyBoard(Board):

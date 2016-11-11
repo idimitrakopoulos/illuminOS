@@ -72,7 +72,7 @@ worknet = "2334d"
 Then in `main.py` the following code must be copied. This will scan for known SSIDs as per the configuration above and connect to the first preferred network
 
 ```python
-from hw.NodeMCU import NodeMCU
+from hw.board.NodeMCU import NodeMCU
 
 # Instantiate our board
 board = NodeMCU()
@@ -96,7 +96,7 @@ Following this event you could execute any code required by your project on sing
 For the **Flash** button use
 
 ```python
-from hw.NodeMCU import NodeMCU
+from hw.board.NodeMCU import NodeMCU
 
 # Instantiate our board
 board = NodeMCU()
@@ -119,7 +119,7 @@ board.get_user_button_events("hello_world", "hello_world")
 You can make the on-board LEDs flash as per requirement by using the following command.
 
 ```python
-from hw.NodeMCU import NodeMCU
+from hw.board.NodeMCU import NodeMCU
 
 # Instantiate our board
 board = NodeMCU()
@@ -136,7 +136,7 @@ board.blink_blue_led(5, 0.5)
 You can recursively wipe files and folders from your microcontroller using this function. 
 
 ```python
-from hw.NodeMCU import NodeMCU
+from hw.board.NodeMCU import NodeMCU
 
 # Instantiate our board
 board = NodeMCU()
@@ -199,7 +199,7 @@ load_properties("conf/my.properties")
 Garbage collection is better performed before it's needed, the memory manager periodically runs and collects garbage plus it reports if memory is low
 
 ```python
-from hw.NodeMCU import NodeMCU
+from hw.board.NodeMCU import NodeMCU
 # Instantiate our board
 board = NodeMCU()
 
