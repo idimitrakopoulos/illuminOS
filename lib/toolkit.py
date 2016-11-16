@@ -23,6 +23,9 @@ def determine_preferred_wifi(configured, found):
             if j[0].decode('UTF-8') == k:
                 log.info("Configured WiFi network '" + k + "' was found")
                 connect_to = {"ssid" : k, "password" : v}
+                break
+        if connect_to:
+            break
 
     return connect_to
 

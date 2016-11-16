@@ -18,3 +18,16 @@ log.info(version_info["name"] + " " + version_info["version"] + " running on "  
 preferred_wifi = determine_preferred_wifi(load_properties("conf/network.properties"), board.scan_wifi())
 ip = board.connect_to_wifi(preferred_wifi["ssid"], preferred_wifi["password"], 10)
 
+
+from hw.sensor.DHT import DHT
+import machine
+
+# Instantiate our sensor
+d = DHT("DHT11", machine.Pin(10))
+
+# Get temperature in Celsius
+d.get_temperature()
+
+# Get temperature in Fahrenheit
+d.get_temperature("F")
+

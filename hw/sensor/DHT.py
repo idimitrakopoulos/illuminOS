@@ -41,4 +41,4 @@ class DHT:
 
     # @timed_function
     def convert_C_to_F(self, celsius):
-        return (celsius * 9 / 5) + 32
+        return (float(celsius) * 9 / 5) + 32
