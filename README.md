@@ -237,7 +237,7 @@ log.debug("Free memory: " + str(gc.free_mem()))
 Drive the DHT11 and DHT22 sensors using cool wrappers for the Micropython drivers
 
 ```python
-from hw.sensor.DHT import DHT
+from hw.sensor.DHT import DHT, TemperatureUnit
 import machine
 
 # Instantiate our sensor
@@ -247,13 +247,13 @@ d = DHT("DHT11", machine.Pin(10))
 d.get_temperature()
 
 # Get temperature in Fahrenheit
-d.get_temperature("F")
+d.get_temperature(TemperatureUnit.FAHRENHEIT)
 
 # Get temperature numeric in Celsius
-d.get_temperature("C", False)
+d.get_temperature(TemperatureUnit.CELSIUS, False)
 
 # Get temperature numeric in Fahrenheit
-d.get_temperature("F", False)
+d.get_temperature(TemperatureUnit.FAHRENHEIT, False)
 ```
 
 # License
