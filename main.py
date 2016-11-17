@@ -19,15 +19,15 @@ preferred_wifi = determine_preferred_wifi(load_properties("conf/network.properti
 ip = board.connect_to_wifi(preferred_wifi["ssid"], preferred_wifi["password"], 10)
 
 
-from hw.sensor.DHT import DHT
+from hw.sensor.DHT import DHT, DHTType, TemperatureUnit
 import machine
 
 # Instantiate our sensor
-d = DHT("DHT11", machine.Pin(10))
+d = DHT(DHTType.DHT11, machine.Pin(10))
 
 # Get temperature in Celsius
 d.get_temperature()
 
 # Get temperature in Fahrenheit
-d.get_temperature("F")
+d.get_temperature(TemperatureUnit.FAHRENHEIT)
 
