@@ -1,0 +1,3 @@
+[submodule "hw/sensor/bmp180"]
+	path = hw/sensor/bmp180
+	url = https://github.com/micropython-IMU/micropython-bmp180
