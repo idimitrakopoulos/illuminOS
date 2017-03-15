@@ -77,6 +77,11 @@ def hello_world():
     log.info("HELLO WORLD!")
 
 
+# @timed_function
+def convert_C_to_F(self, celsius):
+    return (float(celsius) * 9 / 5) + 32
+
+
 def find_enum_id(enum, key):
     result = 0
     for i in enum:

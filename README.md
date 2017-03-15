@@ -237,11 +237,10 @@ log.debug("Free memory: " + str(gc.free_mem()))
 Drive the DHT11 and DHT22 sensors using cool wrappers for the Micropython drivers
 
 ```python
-from hw.sensor.DHT import DHT, TemperatureUnit
-import machine
+from hw.sensor.DHT import DHT, DHTType, TemperatureUnit
 
 # Instantiate our sensor
-d = DHT("DHT11", machine.Pin(10))
+d = DHT(DHTType.DHT11, 10)
 
 # Get temperature in Celsius
 d.get_temperature()
@@ -254,6 +253,35 @@ d.get_temperature(TemperatureUnit.CELSIUS, False)
 
 # Get temperature numeric in Fahrenheit
 d.get_temperature(TemperatureUnit.FAHRENHEIT, False)
+```
+
+### Temperature/Pressure/Altitude sensor (BMPxxx)
+
+Drive Temperature/Pressure/Altitude sensor (BMP180 or BMP280)
+
+```python
+from hw.sensor.BMP import BMP, BMPType, TemperatureUnit, PressureUnit, AltitudeUnit
+
+# Instantiate our sensor
+s = BMP(BMPType.BMP180, 2, 0)
+
+# Get temperature in Celsius
+s.get_temperature()
+
+# Get temperature in Fahrenheit
+s.get_temperature(TemperatureUnit.FAHRENHEIT)
+
+# Get temperature numeric in Celsius
+s.get_temperature(TemperatureUnit.CELSIUS, False)
+
+# Get temperature numeric in Fahrenheit
+s.get_temperature(TemperatureUnit.FAHRENHEIT, False)
+
+# Get altitude in meters
+s.get_altitude(AltitudeUnit.METERS)
+
+# Get pressure in hectopascals
+s.get_pressure(PressureUnit.HECTOPASCAL)
 ```
 
 # License

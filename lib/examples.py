@@ -98,11 +98,10 @@ board.mem_cleanup()
 # ----------------------------------------------------------------------------------------------------------------------
 # Drive Humidity/Temperature sensor (DHT11 or DHT22)
 # ----------------------------------------------------------------------------------------------------------------------
-from hw.sensor.DHT import DHT, TemperatureUnit
-import machine
+from hw.sensor.DHT import DHT, DHTType, TemperatureUnit
 
 # Instantiate our sensor
-d = DHT("DHT11", machine.Pin(10))
+d = DHT(DHTType.DHT11, 10)
 
 # Get temperature in Celsius
 d.get_temperature()
@@ -115,3 +114,30 @@ d.get_temperature(TemperatureUnit.CELSIUS, False)
 
 # Get temperature numeric in Fahrenheit
 d.get_temperature(TemperatureUnit.FAHRENHEIT, False)
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Drive Temperature/Pressure/Altitude sensor (BMP180 or BMP280)
+# ----------------------------------------------------------------------------------------------------------------------
+from hw.sensor.BMP import BMP, BMPType, TemperatureUnit, PressureUnit, AltitudeUnit
+
+# Instantiate our sensor
+s = BMP(BMPType.BMP180, 2, 0)
+
+# Get temperature in Celsius
+s.get_temperature()
+
+# Get temperature in Fahrenheit
+s.get_temperature(TemperatureUnit.FAHRENHEIT)
+
+# Get temperature numeric in Celsius
+s.get_temperature(TemperatureUnit.CELSIUS, False)
+
+# Get temperature numeric in Fahrenheit
+s.get_temperature(TemperatureUnit.FAHRENHEIT, False)
+
+# Get altitude in meters
+s.get_altitude(AltitudeUnit.METERS)
+
+# Get pressure in hectopascals
+s.get_pressure(PressureUnit.HECTOPASCAL)
