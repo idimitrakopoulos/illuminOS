@@ -1,4 +1,4 @@
-from lib.bmp180.bmp180 import BMP180
+from hw.sensor.bmp180 import BMP180
 from machine import I2C, Pin
 
 from lib.Unit import TemperatureUnit, PressureUnit, AltitudeUnit
@@ -22,8 +22,8 @@ class BMP:
         self.type = type
 
         if self.type == 0:
-            i2c = I2C(scl=Pin(scl), sda=Pin(sda), freq=100000)
-            self.sensor = BMP180(i2c)
+            i2c_bus = I2C(scl=Pin(scl), sda=Pin(sda), freq=100000)
+            self.sensor = BMP180.BMP180(i2c_bus)
             self.sensor.oversample_sett = 2
             self.sensor.baseline = 101325
 

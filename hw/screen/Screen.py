@@ -14,13 +14,16 @@ class ConnectionType:
 
 
 class Screen:
-    type = ""
+    screen_type = ""
     connection_type = ""
+    bus = ""
+    screen = ""
 
 
     # @timed_function
-    def __init__(self, screen_type, connection_type, pins):
-        self.type = screen_type
+    def __init__(self, screen_type, connection_type, bus):
+        self.screen_type = screen_type
         self.connection_type = connection_type
+        self.bus = bus
 
 

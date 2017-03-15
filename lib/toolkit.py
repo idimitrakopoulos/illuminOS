@@ -78,7 +78,7 @@ def hello_world():
 
 
 # @timed_function
-def convert_C_to_F(self, celsius):
+def convert_C_to_F(celsius):
     return (float(celsius) * 9 / 5) + 32
 
 

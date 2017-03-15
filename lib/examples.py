@@ -141,3 +141,15 @@ s.get_altitude(AltitudeUnit.METERS)
 
 # Get pressure in hectopascals
 s.get_pressure(PressureUnit.HECTOPASCAL)
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Drive SSD1306 Display with I2C connection
+# ----------------------------------------------------------------------------------------------------------------------
+from hw.screen.SSD1306 import SSD1306
+from hw.screen.Screen import ConnectionType
+import machine
+
+bus = machine.I2C(machine.Pin(4), machine.Pin(5))
+
+oled = SSD1306(ConnectionType.I2C, bus)
+
