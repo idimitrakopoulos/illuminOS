@@ -19,6 +19,9 @@ class SSD1306(Screen):
 
             log.error("Unknown screen connection type '" + self.connection_type + "'. Cannot instantiate it.")
 
+    def text(self, string, x, y):
+        self.screen.text(string, x, y)
+        self.screen.show()
 
     def init_screen(self, oled):
         oled.invert(1)

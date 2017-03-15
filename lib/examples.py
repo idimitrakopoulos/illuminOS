@@ -152,4 +152,6 @@ import machine
 bus = machine.I2C(machine.Pin(4), machine.Pin(5))
 
 oled = SSD1306(ConnectionType.I2C, bus)
+oled.text("hello world")
+
 
