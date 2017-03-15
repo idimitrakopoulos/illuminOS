@@ -27,6 +27,9 @@ md sensor
 cd sensor
 lcd ../sensor
 mput .*
-
+md bmp180
+cd bmp180
+lcd bmp180
+mput .*
 
 
