@@ -2,6 +2,7 @@
 function check_ampy {
     if hash ampy 2>/dev/null; then
         echo "Adafruit ampy is installed..."
+        sudo ls
     else
         sudo pip3 install adafruit-ampy
     fi
