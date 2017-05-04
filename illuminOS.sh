@@ -5,6 +5,7 @@ OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
 # Initialize our own variables:
 device="/dev/ttyUSB0"
+profile="default"
 
 function usage {
     echo ""
@@ -52,6 +53,18 @@ function install {
     echo "INSTALLATION COMPLETE!"
 }
 
+
+function apply_profile {
+    if [ -d "profile/$profile" ]
+    then
+        echo "Overwriting files required for profile '$profile'"
+        sudo ampy --port /dev/ttyUSB0 put profile/$profile/main.py main.py
+        sudo ampy --port /dev/ttyUSB0 put profile/$profile/conf/profile.properties conf/profile.properties
+    else
+        echo "Error! Profile '$profile' doesn't exist"
+    fi
+}
+
 function uninstall {
     echo ""
     echo "-----------------------"
@@ -88,6 +101,8 @@ while getopts "h?d:p:uic" opt; do
         ;;
     p)  profile=$OPTARG
         echo "Using profile: $profile"
+        apply_profile
+        exit 0
         ;;
     u)  check_ampy
         uninstall

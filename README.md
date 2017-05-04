@@ -1,6 +1,6 @@
 # illuminOS
 
-An open-source MicroPython based OS for WiFi-enabled microcontrollers.
+An open-source MicroPython based OS for ESP microcontroller variants (ESP8266, ESP32).
 It enables you to focus on your actual project by providing ready-made functionality for tedious stuff.
 
 ## Main Features
@@ -8,8 +8,8 @@ It enables you to focus on your actual project by providing ready-made functiona
 * Handles connections with known Wi-Fi networks according to user-defined priority
 * Detects single or any number of taps on microcontroller buttons and allows execution of any code after that
 * Allows the user to take control of the on-board LEDs and blink them with any pattern and delay
-* Automated installation on the mirocontroller (see installation section using `mpfshell`)
-* Filesystem formatter cleans up your microcontroller - no need to reflash it
+* Automated installation on the board
+* Filesystem formatter cleans up your board - no need to reflash it
 * Send (Insta)Push notifications to your mobile phone straight from your microcontroller
 * Update a Dynamic DNS service (DuckDNS) so that your microcontroller is always available online
 * Can be configured for (potentially) any MicroPython enabled microcontroller (out of the box support for `NodeMCU`)
@@ -21,6 +21,9 @@ It enables you to focus on your actual project by providing ready-made functiona
 ## Drive Sensors & Other Hardware
 
 * Drive DHT11 and DHT22 (both sensors for humidity and temperature) using cool wrappers for the MicroPython drivers
+* Drive the BMP180 sensor (temperature, pressure, altitude)
+* Drive any Analog Sensor (e.g. Rain sensor, Soil humidity sensor etc)
+* Drive SSD1306 OLED screens
 
 ## Resources
 
