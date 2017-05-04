@@ -4,13 +4,13 @@
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
 # Initialize our own variables:
-port="/dev/ttyUSB0"
+device="/dev/ttyUSB0"
 
 function usage {
     echo ""
     echo "---------------------------------------------------------------------"
-    echo "To install to board     : $0 [-p /dev/ttyUSB0] -i" 1>&2;
-    echo "To uninstall from board : $0 [-p /dev/ttyUSB0] -u" 1>&2;
+    echo "To install to board     : $0 -i [-p <profile>] [-d /dev/ttyUSB0] " 1>&2;
+    echo "To uninstall from board : $0 -u [-d /dev/ttyUSB0]" 1>&2;
     echo "---------------------------------------------------------------------"
     echo ""
     exit 1;
@@ -33,12 +33,20 @@ function install {
     echo "-----------------------"
     echo ""
 
-    for f in $(ls | grep -v illuminOS.sh)
+    for f in $(ls -t | grep -v illuminOS.sh)
     do
+
+            if [ "$f" = "timestamp" ]
+            then
+                echo "Timestamp file found. Breaking ...."
+                break
+            fi
             printf "Uploading $f ......"
             sudo ampy --port /dev/ttyUSB0 put $f
             echo "[OK]"
     done
+
+    touch timestamp
 
     echo ""
     echo "INSTALLATION COMPLETE!"
@@ -51,13 +59,16 @@ function uninstall {
     echo "-----------------------"
     echo ""
 
+    # Remove timestamp file if exist
+    rm -f timestamp
+
     for f in $(ls | grep -v illuminOS.sh)
     do
             printf "Deleting $f ......"
             if [ -d "$f" ]; then
-                sudo ampy --port /dev/ttyUSB0 rmdir $f
+                sudo ampy --port /dev/ttyUSB0 rmdir $f 2>/dev/null
             else
-                sudo ampy --port /dev/ttyUSB0 rm $f
+                sudo ampy --port /dev/ttyUSB0 rm $f 2>/dev/null
             fi
             echo "[OK]"
     done
@@ -66,14 +77,17 @@ function uninstall {
     echo "UNINSTALLATION COMPLETE!"
 }
 
-while getopts "h?p:iu" opt; do
+while getopts "h?d:iup:" opt; do
     case "$opt" in
     h|\?)
         usage
         exit 0
         ;;
-    p)  port=$OPTARG
-        echo "Using port: $port"
+    d)  device=$OPTARG
+        echo "Using device: $device"
+        ;;
+    p)  profile=$OPTARG
+        echo "Using profile: $profile"
         ;;
     i)  check_ampy
         install
