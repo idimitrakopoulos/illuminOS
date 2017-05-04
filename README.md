@@ -33,17 +33,27 @@ Clone the git repository in any local directory by typing the following:
 ```bash
 $ git clone https://github.com/idimitrakopoulos/illuminOS
 ```
-Now you need to upload it to your microcontroller. To do this first ensure you have the latest MicroPython firmware installed (>1.8.x). To upload files/folders you can use the excellent `mpfshell` [see installation instructions here](https://github.com/wendlers/mpfshell#installing). 
+Now you need to install it to your board. To do this first ensure you have the latest MicroPython firmware installed (>1.8.x) and that your board is plugged in to your computer via USB.
 
-After installing mpfshell you should connect your PC and microntroller via USB and type (provided the device connects to `/dev/ttyUSB0`):
+Use the following command to install illuminOS (assuming the device is `/dev/ttyUSB0`):
 
 ```bash
 $ cd illuminOS
-$ sudo mpfshell -s upload.mpf
+$ ./illuminOS -d /dev/ttyUSB0 -i -c
 ```
-If the device connects to another path then simply edit `upload.mpf` and replace `/dev/ttyUSB0` to the proper device before running the above command.
 
-Of course you can also upload `illuminOS` manually or using one of your favorite IDEs (e.g. ESPlorer) 
+-d specifies the device path, you may change it as needed
+-i tells the script to install illuminOS
+-c tells the script to connect to the board after installation (using picocom)
+
+Use the following command to uninstall illuminOS (assuming the device is `/dev/ttyUSB0`):
+
+```bash
+$ cd illuminOS
+$ ./illuminOS -d /dev/ttyUSB0 -u
+```
+-d specifies the device path, you may change it as needed
+-u tells the script to uninstall illuminOS
 
 ## Project Structure
 
@@ -53,11 +63,11 @@ The user is free to utilize the functionality offered by illuminOS freely and at
 
 ## Microcontroller Support
 
-illuminOS is open enough to allow the configuration and control of any ESP based microcontroller. At this point only nodeMCU has been configured by the author but other controllers can be contributed by users. 
+illuminOS is open enough to allow the configuration and control of any ESP based microcontroller. At this point only NodeMCU has been configured by the author but other controllers can be contributed by users.
 
 To do this a new board class must be created that inherits from hw.Board.
 
-e.g. `hw/NodeMCU.py`
+e.g. `hw/board/NodeMCU.py`
 
 In this class _board_ related configuration can be mapped and Board functions invoked. The concept is to abstract hardware mapping as much as possible from functionality.
 
@@ -118,7 +128,7 @@ board.get_user_button_events("hello_world", "hello_world")
 
 ---
 
-### Control LEDs
+### Control on-board LEDs
 
 You can make the on-board LEDs flash as per requirement by using the following command.
 
@@ -297,6 +307,15 @@ bus = machine.I2C(machine.Pin(4), machine.Pin(5))
 
 oled = SSD1306(ConnectionType.I2C, bus)
 oled.text("hello world")
+
+```
+
+### Analog Sensor (A soil sensor in this example)
+```python
+from hw.sensor.AnalogSensor import AnalogSensor
+
+soil_sensor = AnalogSensor(0, 1024, 364) # 364 is submerged in water and 1024 is dry
+soil_sensor.get_value()
 
 ```
 

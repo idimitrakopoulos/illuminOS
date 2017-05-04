@@ -77,7 +77,7 @@ function uninstall {
     echo "UNINSTALLATION COMPLETE!"
 }
 
-while getopts "h?d:iup:" opt; do
+while getopts "h?d:p:uic" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -89,12 +89,14 @@ while getopts "h?d:iup:" opt; do
     p)  profile=$OPTARG
         echo "Using profile: $profile"
         ;;
-    i)  check_ampy
-        install
-        exit 0
-        ;;
     u)  check_ampy
         uninstall
+        exit 0
+        ;;
+    i)  check_ampy
+        install
+        ;;
+    c)  sudo picocom --baud 115200 $device
         exit 0
         ;;
     esac
