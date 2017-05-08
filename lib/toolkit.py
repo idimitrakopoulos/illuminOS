@@ -10,7 +10,7 @@ def timed_function(f, *args, **kwargs):
         t = time.ticks_us()
         result = f(*args, **kwargs)
         delta = time.ticks_diff(t, time.ticks_us())
-        log.debug('GC: ' + str(gc.mem_free()) + ' Function {} Time = {:6.3f}ms'.format(myname, delta/1000))
+        log.debug('GC: {} Function {} Time = {:6.3f}ms'.format(str(gc.mem_free()), myname, delta/1000))
         return result
 
     return new_func
@@ -21,7 +21,7 @@ def determine_preferred_wifi(configured, found):
     for j in found:
         for k, v in configured.items():
             if j[0].decode('UTF-8') == k:
-                log.info("Configured WiFi network '" + k + "' was found")
+                log.info("Configured WiFi network '{}' was found".format(k))
                 connect_to = {"ssid" : k, "password" : v}
                 break
         if connect_to:
@@ -48,7 +48,7 @@ def load_properties(filepath, sep='=', comment_char='#', section_char='['):
 
 # @timed_function
 def update_duck_dns(domain, token, ip):
-    log.info("Updating DuckDNS service. (Domain: '" + domain + "' IP: '" + ip + "')")
+    log.info("Updating DuckDNS service. (Domain: '{}' IP: '{}')".format(domain, ip))
     return http_get("https://www.duckdns.org/update?domains=" + domain + "&token=" + token + "&ip=" + ip)
 
 # @timed_function

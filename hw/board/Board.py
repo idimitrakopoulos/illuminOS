@@ -42,7 +42,7 @@ class Board:
     def connect_to_wifi(self, ssid, password, mode, wait_for_ip=0):
         import network, time
 
-        log.info("Attempting to connect to WiFi '" + ssid + "' with password '" + password + "'...")
+        log.info("Attempting to connect to WiFi '{}' with password '{}'...".format(ssid, password))
         n = network.WLAN(mode)
         n.active(True)
         n.connect(ssid, password)
@@ -50,7 +50,7 @@ class Board:
         # Wait for IP address to be provided
         count = 0
         while not n.isconnected() and count < wait_for_ip:
-            log.info("Waiting to obtain IP ... (" + str(wait_for_ip - count) + " sec remaining)")
+            log.info("Waiting to obtain IP ... ({} sec remaining)".format(str(wait_for_ip - count)))
             time.sleep(1)
             count += 1
 
@@ -58,10 +58,10 @@ class Board:
         ip = n.ifconfig()[0]
 
         if ip == "0.0.0.0":
-            log.info("Could not obtain IP on '" + ssid + "'")
+            log.info("Could not obtain IP on '{}'".format(ssid))
         else:
 
-            log.info("Connected with IP '" + ip + "'")
+            log.info("Connected with IP '{}'".format(ip))
 
         return ip
 
@@ -151,7 +151,7 @@ class Board:
         elif 4001 <= mem <= 6000:
             log.warn("Memory is very low: " + str(mem))
         elif mem < 4000:
-            log.critical("Memory is extremely low: " + str(mem))
+            log.critical("Memory is extremely low: {}".format(str(mem)))
         else:
             log.debug("Memory is currently: " + str(mem))
 

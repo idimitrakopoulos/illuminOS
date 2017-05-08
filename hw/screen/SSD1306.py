@@ -17,7 +17,7 @@ class SSD1306(Screen):
 
         else:
 
-            log.error("Unknown screen connection type '" + self.connection_type + "'. Cannot instantiate it.")
+            log.error("Unknown screen connection type '{}'. Cannot instantiate it.".format(self.connection_type))
 
     def text(self, string, x, y):
         self.screen.text(string, x, y)

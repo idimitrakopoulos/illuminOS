@@ -26,7 +26,7 @@ class DHT:
         elif self.type == 1:
              self.sensor = dht.DHT22(Pin(pin))
         else:
-            log.error("Unknown sensor type '" + self.type + "'. Cannot instantiate it.")
+            log.error("Unknown sensor type '{}'. Cannot instantiate it.".format(self.type))
 
     # @timed_function
     def get_temperature(self, unit=TemperatureUnit.CELSIUS, show_unit=False):
