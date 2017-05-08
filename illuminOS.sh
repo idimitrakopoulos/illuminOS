@@ -102,11 +102,9 @@ while getopts "h?d:p:uic" opt; do
     p)  profile=$OPTARG
         echo "Using profile: $profile"
         apply_profile
-        exit 0
         ;;
     u)  check_ampy
         uninstall
-        exit 0
         ;;
     i)  check_ampy
         install
