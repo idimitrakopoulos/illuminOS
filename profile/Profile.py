@@ -1,4 +1,4 @@
-from lib.toolkit import load_properties
+from lib.toolkit import load_properties, log
 
 
 class Profile:
@@ -7,6 +7,7 @@ class Profile:
 
     def __init__(self):
         self.properties = load_properties(self.properties_URI)
+        log.info("Using profile '{}'".format(self.get_str_property("name")))
 
     def get_str_property(self, name):
         return self.properties[name]
