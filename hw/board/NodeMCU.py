@@ -60,5 +60,3 @@ class NodeMCU(Board):
         import network
         return Board.connect_to_wifi(self, ssid, password, network.STA_IF, wait_for_ip)
 
-    def sleep(self, milliseconds):
-        Board.sleep(self, milliseconds)

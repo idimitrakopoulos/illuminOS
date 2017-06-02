@@ -1,18 +1,20 @@
-from hw.board.NodeMCU import NodeMCU
-from lib.toolkit import log
-from profile.Profile import Profile
-import machine
 import time
+
+import machine
 import ssd1306
 from hw.sensor.bmp180.bmp180 import BMP180
 from machine import I2C, Pin
+
+from hw.board.NodeMCU import NodeMCU
+from lib.PropertyManager import PropertyManager
+from lib.toolkit import log
 
 if machine.reset_cause() == machine.DEEPSLEEP_RESET:
     log.info("Woke from deep sleep ...")
 else:
     log.info("Power on from hard reset ...")
 
-p = Profile()
+p = PropertyManager()
 board = NodeMCU()
 
 # BMP180 init
@@ -52,3 +54,6 @@ while True:
 # Wake every 8 hours a.k.a 3 times/day
 # board.sleep(28800000)
 # board.sleep(5000)
+
+
+

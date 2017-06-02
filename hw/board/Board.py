@@ -182,3 +182,9 @@ class Board:
 
         # put the device to sleep
         machine.deepsleep()
+
+
+    def reboot(self):
+        log.info("Rebooting board ...")
+        import machine
+        machine.reset()

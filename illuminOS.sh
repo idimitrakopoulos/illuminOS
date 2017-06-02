@@ -26,6 +26,20 @@ function check_ampy {
     fi
 }
 
+function check_compatibility {
+    board_fw=`sudo ampy --port /dev/ttyUSB0 run get_fw_version.py`
+    illuminos_fw=`cat MANIFEST.MF | grep micropython_compatibility | cut -d'=' -f2 | xargs`
+    echo "Board Firmware = ${board_fw}"
+    echo "illuminOS Firmware = ${illuminos_fw}"
+    if [[ $board_fw != $illuminos_fw* ]];
+    then
+        echo "Your connected board has a different micropython firmware than what is compatible with illuminOS. Exiting..."
+        exit 1
+    else
+        echo "Board firmware and illuminOS version are compatible! Proceeding ..."
+    fi
+}
+
 
 function install {
     echo ""
@@ -107,6 +121,7 @@ while getopts "h?d:p:uic" opt; do
         uninstall
         ;;
     i)  check_ampy
+        check_compatibility
         install
         ;;
     c)  sudo picocom --baud 115200 $device
