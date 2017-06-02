@@ -55,5 +55,3 @@ while True:
 # board.sleep(28800000)
 # board.sleep(5000)
 
-
-
