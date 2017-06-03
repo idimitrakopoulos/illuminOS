@@ -34,6 +34,7 @@ def load_properties(filepath, sep='=', comment_char='#', section_char='['):
     Read the file passed as parameter as a properties file.
     """
     props = {}
+    # if check_file_exists(filepath):
     with open(filepath, "rt") as f:
         for line in f:
             l = line.strip()
@@ -45,6 +46,13 @@ def load_properties(filepath, sep='=', comment_char='#', section_char='['):
 
     return props
 
+def check_file_exists(filename):
+    import os
+    try:
+        os.stat(filename)
+        return True
+    except Exception:
+        return False
 
 # @timed_function
 def update_duck_dns(domain, token, ip):
