@@ -28,6 +28,7 @@ It enables you to focus on your actual project by providing ready-made functiona
 ## Resources
 
 Github issues list/bugtracker: https://github.com/idimitrakopoulos/illuminOS/issues
+Micropython www.micropython.org
 
 ## Quick Install
 
