@@ -35,13 +35,14 @@ if stepper.get_current_step() == 1:
 
     oled = SSD1306(ConnectionType.I2C, bus)
 
+    shumidity = soil_sensor.get_value()
 
-    log.info("Soil humidity sensor value is {}".format(soil_sensor.get_value()))
+    log.info("Soil humidity sensor value is {}".format(shumidity))
     oled.text("Soil Humidity")
-    oled.text("{}".format(soil_sensor.get_value()), 0, 10)
+    oled.text("{}".format(shumidity), 0, 10)
 
     step_file_dict = {'current_step': '2',
-                      'vhumidity' : soil_sensor.get_value()}
+                      'shumidity' : shumidity}
 
     stepper.create_property_file(p.get_str_property("step_file"), step_file_dict)
 
@@ -68,22 +69,24 @@ elif stepper.get_current_step() == 2:
     gc.collect()
     log.debug(gc.mem_free())
 
-    msg = {'string': 'Soil Humidity: {}'.format(stepper.prop_manager.get_str_property("vhumidity"))}
 
-    send_instapush_notification("5910caeaa4c48a63f7d2c9f9", "dde6406d08e0e88e6f3d71acb1c2ecde", "generic", msg)
+    import urequests
+
+    url = 'http://haxae.com:8086/write?db=plant_monitor'
+    payload = 'plants,plant_name=pachira shumidity={}'.format(stepper.prop_manager.get_str_property("shumidity"))
+    headers = {'X-Requested-With': 'Python requests', 'Content-type': 'text/xml'}
+    r = urequests.post(url, data=payload, headers=headers)
+
     gc.collect()
     log.debug(gc.mem_free())
 
-
     stepper.remove_property_file(p.get_str_property("step_file"))
 
-    # Wake every 8 hours a.k.a 3 times/day
-    # board.sleep(28800000)
     log.info("End of step '{}'. Sleeping ...".format(str(stepper.get_current_step())))
+    # Wake every 6 hours a.k.a 4 times/day
+    board.sleep(21600000)
 
-    import utime
-    utime.sleep_ms(2000)
-    board.sleep(5000)
 
 else:
     pass
+

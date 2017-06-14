@@ -28,8 +28,10 @@ class Stepper:
                 for key, value in dict.items():
                     f.write(str(key) + " = " + str(value) + "\n")
 
-        except OSError:
-            log.warn("Can't write to file %s" % uri)
+        except OSError as e:
+            log.fatal("Can't write to file %s" % uri)
+            log.fatal(e)
+            raise OSError
 
         finally:
             f.close()
