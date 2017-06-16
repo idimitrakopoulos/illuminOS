@@ -1,6 +1,7 @@
-from lib.Stepper import Stepper
-from lib.PropertyManager import PropertyManager
 import machine
+
+from lib.PropertyManager import PropertyManager
+from lib.Stepper import Stepper
 from lib.toolkit import log
 
 if machine.reset_cause() == machine.DEEPSLEEP_RESET:
@@ -55,7 +56,7 @@ elif stepper.get_current_step() == 2:
     log.debug("step 2 code")
     import gc
     from hw.board.NodeMCU import NodeMCU
-    from lib.toolkit import send_instapush_notification, determine_preferred_wifi, load_properties
+    from lib.toolkit import determine_preferred_wifi, load_properties
 
     gc.collect()
     log.debug(gc.mem_free())
@@ -72,10 +73,10 @@ elif stepper.get_current_step() == 2:
 
     import urequests
 
-    url = 'http://haxae.com:8086/write?db=plant_monitor'
-    payload = 'plants,plant_name=pachira shumidity={}'.format(stepper.prop_manager.get_str_property("shumidity"))
+
+    payload = p.get_str_property("grafana_json_payload").format(stepper.prop_manager.get_str_property("shumidity"))
     headers = {'X-Requested-With': 'Python requests', 'Content-type': 'text/xml'}
-    r = urequests.post(url, data=payload, headers=headers)
+    r = urequests.post(p.get_str_property("grafana_url"), data=payload, headers=headers)
 
     gc.collect()
     log.debug(gc.mem_free())
