@@ -5,6 +5,7 @@ OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
 # Initialize our own variables:
 device="/dev/ttyUSB0"
+profile="default"
 
 function usage {
     echo ""
@@ -22,6 +23,20 @@ function check_ampy {
         sudo ls 1>/dev/null # making sure we have sudo access
     else
         sudo pip3 install adafruit-ampy
+    fi
+}
+
+function check_compatibility {
+    board_fw=`sudo ampy --port /dev/ttyUSB0 run get_fw_version.py`
+    illuminos_fw=`cat MANIFEST.MF | grep micropython_compatibility | cut -d'=' -f2 | xargs`
+    echo "Board Firmware = ${board_fw}"
+    echo "illuminOS Firmware = ${illuminos_fw}"
+    if [[ $board_fw != $illuminos_fw* ]];
+    then
+        echo "Your connected board has a different micropython firmware than what is compatible with illuminOS. Exiting..."
+        exit 1
+    else
+        echo "Board firmware and illuminOS version are compatible! Proceeding ..."
     fi
 }
 
@@ -50,6 +65,18 @@ function install {
 
     echo ""
     echo "INSTALLATION COMPLETE!"
+}
+
+
+function apply_profile {
+    if [ -d "profile/$profile" ]
+    then
+        echo "Overwriting files required for profile '$profile'"
+        sudo ampy --port /dev/ttyUSB0 put profile/$profile/main.py main.py
+        sudo ampy --port /dev/ttyUSB0 put profile/$profile/conf/profile.properties conf/profile.properties
+    else
+        echo "Error! Profile '$profile' doesn't exist"
+    fi
 }
 
 function uninstall {
@@ -88,12 +115,13 @@ while getopts "h?d:p:uic" opt; do
         ;;
     p)  profile=$OPTARG
         echo "Using profile: $profile"
+        apply_profile
         ;;
     u)  check_ampy
         uninstall
-        exit 0
         ;;
     i)  check_ampy
+        check_compatibility
         install
         ;;
     c)  sudo picocom --baud 115200 $device

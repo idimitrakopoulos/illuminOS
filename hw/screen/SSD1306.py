@@ -1,6 +1,6 @@
 from hw.screen.Screen import Screen, ScreenType
 import time, ssd1306
-from toolkit import log
+from lib.toolkit import log
 
 
 class SSD1306(Screen):
@@ -17,9 +17,9 @@ class SSD1306(Screen):
 
         else:
 
-            log.error("Unknown screen connection type '" + self.connection_type + "'. Cannot instantiate it.")
+            log.error("Unknown screen connection type '{}'. Cannot instantiate it.".format(self.connection_type))
 
-    def text(self, string, x, y):
+    def text(self, string, x=0, y=0):
         self.screen.text(string, x, y)
         self.screen.show()
 

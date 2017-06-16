@@ -1,6 +1,6 @@
 # illuminOS
 
-An open-source MicroPython based OS for WiFi-enabled microcontrollers.
+An open-source MicroPython based OS for ESP microcontroller variants (ESP8266, ESP32).
 It enables you to focus on your actual project by providing ready-made functionality for tedious stuff.
 
 ## Main Features
@@ -8,8 +8,8 @@ It enables you to focus on your actual project by providing ready-made functiona
 * Handles connections with known Wi-Fi networks according to user-defined priority
 * Detects single or any number of taps on microcontroller buttons and allows execution of any code after that
 * Allows the user to take control of the on-board LEDs and blink them with any pattern and delay
-* Automated installation on the mirocontroller (see installation section using `mpfshell`)
-* Filesystem formatter cleans up your microcontroller - no need to reflash it
+* Automated installation on the board
+* Filesystem formatter cleans up your board - no need to reflash it
 * Send (Insta)Push notifications to your mobile phone straight from your microcontroller
 * Update a Dynamic DNS service (DuckDNS) so that your microcontroller is always available online
 * Can be configured for (potentially) any MicroPython enabled microcontroller (out of the box support for `NodeMCU`)
@@ -17,14 +17,24 @@ It enables you to focus on your actual project by providing ready-made functiona
 * Ability to read .properties files for configuration
 * Memory manager that periodically calls garbage collector
 * Intended for use in both commercial and open-source projects.
+* Extend your on-board memory by using the Stepper mechanism!
 
 ## Drive Sensors & Other Hardware
 
 * Drive DHT11 and DHT22 (both sensors for humidity and temperature) using cool wrappers for the MicroPython drivers
+* Drive the BMP180 sensor (temperature, pressure, altitude)
+* Drive any Analog Sensor (e.g. Rain sensor, Soil humidity sensor etc)
+* Drive SSD1306 OLED screens
+
+## Profiles (i.e. ready-made profiles that provide a specific functionality set provided that you have done all the required hardware wiring/soldering)
+
+* Plant Monitor (monitors soil humidity)
+* Weather Station (in progress...)
 
 ## Resources
 
 Github issues list/bugtracker: https://github.com/idimitrakopoulos/illuminOS/issues
+Micropython www.micropython.org
 
 ## Quick Install
 
@@ -33,33 +43,64 @@ Clone the git repository in any local directory by typing the following:
 ```bash
 $ git clone https://github.com/idimitrakopoulos/illuminOS
 ```
-Now you need to install it to your board. To do this first ensure you have the latest MicroPython firmware installed (>1.8.x) and that your board is plugged in to your computer via USB.
+Now you need to install it to your board. To do this first *ensure* you have the latest MicroPython firmware installed and that your board is plugged in to your computer via USB.
 
-Use the following command to install illuminOS (assuming the device is `/dev/ttyUSB0`):
+I use `espedite` which is a smart code uploader and works really well with illuminOS. To get it type:
+
+```bash
+$ git clone https://github.com/idimitrakopoulos/espedite
+```
+
+After cloning is complete use the following commands to install illuminOS (assuming the device is `/dev/ttyUSB0`):
 
 ```bash
 $ cd illuminOS
-$ ./illuminOS -d /dev/ttyUSB0 -i -c
+$ ../espedite/espedite.py -i -C -v -s espedite.skip -d /dev/ttyUSB0 -c
 ```
 
--d specifies the device path, you may change it as needed
--i tells the script to install illuminOS
--c tells the script to connect to the board after installation (using picocom)
+This will compile all micropython source files and install them to your board.
+
+You can skip compilation by removing the -C flag but it's not recommended because it will save you lot's of runtime memory. Again you should make sure you have the latest micropython firmware on your board if you want to use the -C feature.
 
 Use the following command to uninstall illuminOS (assuming the device is `/dev/ttyUSB0`):
 
 ```bash
 $ cd illuminOS
-$ ./illuminOS -d /dev/ttyUSB0 -u
+$ ../espedite/espedite.py -u
 ```
--d specifies the device path, you may change it as needed
--u tells the script to uninstall illuminOS
 
-## Project Structure
+## Bootstrap files & Profiles
 
-Both boot strap files `main.py` and `boot.py` are intentionally left empty.
+Both bootstrap files `main.py` and `boot.py` are intentionally left empty so that you can add your own code. You'll see commented out code to get you started.
+
+You may use ready-made programs called profiles. Profiles are located under the profile folder and when used they are copied using espedite to the root of the board's filesystem effectively overwriting the empty main.py file. This give you ready made functionality that can work if you have the correct hardware and wiring installed on the board.
+
+For example the plant_monitor profile offers functionality to turn an ESP8266 board into a plant monitor. Install it using
+
+```bash
+$ cd illuminOS
+$ ../espedite/espedite.py -i -C -v -s espedite.skip -d /dev/ttyUSB0 -p plant_monitor -c
+```
 
 The user is free to utilize the functionality offered by illuminOS freely and at any point. It certainly makes sense however, to play with some of the examples below.
+
+## Stepper
+
+illuminOS offers a stepper that enables you to extend the things a single ESP board can do. Basically it allows you to segment your code in steps and then reboot. You may write down your state (variables etc) between reboots and of course your step ID. Rebooting clears all used memory allowing you to take your ESP even further! On board reboot the Stepper identifies the step reads the state and continues with additional functionality.
+
+Sample step scenario:
+
+- Import all sensor drivers and get your readings
+- Reboot & write readings to local file
+- Read readings from local file
+- Connect to WiFi
+- Upload readings (anywhere) using a JSON call
+- Remove local file
+- Reboot
+
+This will start again from the top. You can customize and run any number of steps. This coupled with the compile feature when uploading your code allows you to not worry about memory consumption 99% of the times.
+
+An implementation using Stepper can be found in profile/plant_monitor/main.py
 
 ## Microcontroller Support
 
